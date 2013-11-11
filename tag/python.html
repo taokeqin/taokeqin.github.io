@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>陶克勤的博客 <small>python</small></title>
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="./theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="./theme/css/font-awesome.css" type="text/css" />
+        <meta charset="utf-8" />
+      
+
+        <!-- Javascript-->
+        <script src="./theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li><a href=".">Blog</a> </li>
+          <li><a href="./archives.html">Archive</a></li>
+          <li class="current"><a href="./tags.html">Tags</a> </li>
+          <li><a href="./">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href=".">陶克勤的博客 <strong></strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+            <li><a href="./pages/about-taokeqin.html">关于</a></li>
+            <li><a href="./pages/toolbox.html">toolbox</a></li>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+        
+<section id="content">
+<div class="posts">
+    <ol id="post-list">
+        
+        <li>
+            <article class="archive">
+                <header> 
+                    <h1 class="archive-entry-title">
+                        <a href="./python-realtime.html" rel="bookmark" title="Permalink to python realtime">python realtime</a>
+                    </h1> 
+                </header>
+                <footer class="post-info">
+                    <abbr>
+                      周日 21 七月 2013 
+                         By <a class="url fn" href="./author/tao-ke-qin.html">陶克勤</a>
+  
+                    </abbr>
+                    <div class="entry-summary"> <div class="section" id="id1">
+<h2>声明</h2>
+<p>本文是基于一篇英文文章翻译过来的。</p>
+<p>原文链接：<a class="reference external" href="http://mrjoes.github.io/2013/06/21/python-realtime.html">http://mrjoes.github.io/2013/06/21/python-realtime.html</a></p>
+<p>原作者： Serge Koval</p>
+<p>License：Creative Commons attribution-noncommercial-sharealike License</p>
+</div>
+<div class="section" id="id2">
+<h2>简介</h2>
+<p>最近我参与了 <a class="reference external" href="http://www.kickstarter.com/projects/1223051718/practical-flask-book-project">Flask book</a> 的一次聚会,涉及到些realtime相关的问题-它是如何工作的，
+如何整合实时部分与传统的WSGI应用，如何组织应用程序代码等。</p>
+<p>我们使用Google Hangouts，原本打算将我们的Hangouts视频录下来，但失败了。
+所以，我决定还是写一篇详尽的博客文章，其中包括一些基础知识，以及简短的介绍用Python异步编程等。</p>
+</div>
+<div class="section" id="id3">
+<h2>一点理论知识</h2>
+<p>让我们尝试解决服务器&quot;推送&quot;的问题。web都是拉取数据 - 浏览器发出请求到服务器，服务器会产生并发送回响应。
+但是，如果有需要将数据主动从服务器推送到浏览器该怎么办呢？</p>
+<p>解决方法很简单：浏览器发出AJAX请求到服务器，并要求更新。
+虽然看起来这个是常用浏览器和服务器之间推送办法，但有一个问题 ...</p></div>
+                    <a href="./python-realtime.html">read more</a></div>
+                </footer><!-- /.post-info -->
+                <!-- /.entry-content -->
+            </article>
+        </li>
+    </ol><!-- /#posts-list -->
+</div>
+<p class="paginator">
+    Page 1 / 1
+</p>
+</section><!-- /#content -->
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href=".">陶克勤</a> (2012)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', "UA-32182203-1"]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

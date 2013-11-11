@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>写出更好的代码</title>
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="./theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="./theme/css/font-awesome.css" type="text/css" />
+        <meta charset="utf-8" />
+      
+
+        <!-- Javascript-->
+        <script src="./theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li class="current"><a href=".">Blog</a> </li>
+          <li><a href="./archives.html">Archive</a></li>
+          <li><a href="./categories.html">Categories</a> </li>
+          <li><a href="feeds/all.xml">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href=".">陶克勤的博客 <strong></strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+            <li><a href="./pages/about-taokeqin.html">关于</a></li>
+            <li><a href="./pages/toolbox.html">toolbox</a></li>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+<section id="content" class="body">
+  <header class="post">
+    <h1 class="entry-title">
+      写出更好的代码
+    </h1>
+  </header>
+  <footer class="post-info">
+    <abbr>
+      周二 05 六月 2012 
+         By <a class="url fn" href="./author/tao-ke-qin.html">陶克勤</a>
+  
+    </abbr>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>最近想看两本书&lt;&lt;数学之美&gt;&gt;和&lt;&lt;暗时间&gt;&gt;
+其实这两本书的内容都有零散的看过一些,不过当可以买到纸质书的时候,还是有很想买的欲望.
+再次在看暗时间的是否不幸的我点进了这个链接: <a class="reference external" href="http://www.joelonsoftware.com/">http://www.joelonsoftware.com/</a>
+更不幸的是我点进了下面的一篇文章: <a class="reference external" href="http://www.joelonsoftware.com/articles/fog0000000043.html">The Joel Test: 12 Steps to Better Code</a></p>
+<p>看了一下时间,这篇文章已经是2000年的时候写的了,在那个时候就已经用到了下面的这些技术,我只能说程序员的世界发展真的很慢,因为这些技术现在都还在用.
+而且有的开发可能现在都还没有完整的run他的这些步骤.</p>
+<p>我想来回答Joel的这些问题,在现代的一个背景下面,在我的知识范围内来看看我能想到写什么?</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Do you use source control?</dt>
+<dd><p class="first last">这个必须有.如果你相对比较怀旧一点,用SVN吧.
+如果你又不想依赖于中心服务器,不想看没有个commit log都要从服务器拉取,用分布式的hg 和 git.
+如果想更加的现代,可以看看bitbucket.org 和 github.com. 或许这样的合作方式,是十年前没有想到的.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Can you make a build in one step?</dt>
+<dd><p class="first last">这个可以有,拿设计模式来讲我愿意把这个叫做facade.你做的越少,犯错的机会就越少.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Do you make daily builds?</dt>
+<dd><p class="first last">这个应该有.我不知道在十年前用什么工具,但是现在做这个的开源工具还是不错的,比如jenkins,buildbot</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Do you have a bug database?</dt>
+<dd><p class="first last">这个必须有.很多私有的系统.开源的也不错: readmin, trac
+这样的工具其实很多,对于一个团队来说,果断选择一个,尽快的熟悉起来.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Do you fix bugs before writing new code?</dt>
+<dd><p class="first last">这个应该有.就想GTD里面说的,如果一个事情在两分钟之内可以完成,为什么不马上就做呢?
+我觉得作为一个开发人员怎么能够忍受最近的代码里面有bug呢?</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Do you have an up-to-date schedule?</dt>
+<dd><p class="first last">这个对于开发来说貌似是家常便饭.开发人员真的很喜欢:&quot;It will be done when it's done!&quot;
+不要问我什么时候能完成,我真的不确定?
+这篇文章还是不错的: <a class="reference external" href="http://www.joelonsoftware.com/items/2007/10/26.html">Evidence Based Scheduling</a>
+如果现在让我来评估:经验+风险评估</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Do you have a spec?</dt>
+<dd><p class="first last">这个可以有.看过别人写的spec,感觉需要有比较高度的认识才能完成,这是我需要的技能.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Do programmers have quiet working conditions?</dt>
+<dd><p class="first last">这个比较困难吧.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Do you use the best tools money can buy?</dt>
+<dd><p class="first last">best的定义其实不好说,现在很多不要钱的工具用的好同样够威力.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Do you have testers?</dt>
+<dd><p class="first last">这个问题不是在问我.不过我觉得tester还是必要的,毕竟需要术业有专攻.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Do new candidates write code during their interview?</dt>
+<dd><p class="first last">必须.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Do you do hallway usability testing?</dt>
+<dd><p class="first last">这个貌似是为GUI程序或者网页程序来的问题啊?</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>通过读者个感觉我必须要从理论上去解决两个问题:</p>
+<p>1, <strong>怎么更好的进行schecule</strong></p>
+<p>2, <strong>如何写spec.</strong></p>
+
+  </div><!-- /.entry-content -->
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'taokeqin'; 
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href=".">陶克勤</a> (2012)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', "UA-32182203-1"]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

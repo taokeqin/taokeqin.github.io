@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>陶克勤的博客</title>
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="./theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="./theme/css/font-awesome.css" type="text/css" />
+        <meta charset="utf-8" />
+      
+
+        <!-- Javascript-->
+        <script src="./theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li class="current"><a href=".">Blog</a> </li>
+          <li><a href="./archives.html">Archive</a></li>
+          <li><a href="./categories.html">Categories</a> </li>
+          <li><a href="./feeds/all.xml">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href=".">陶克勤的博客 <strong></strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+            <li><a href="./pages/about-taokeqin.html">关于</a></li>
+            <li><a href="./pages/toolbox.html">toolbox</a></li>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+        
+<section id="content">
+<div class="posts">
+    <ol id="post-list">
+        
+        <li>
+            <article class="archive">
+                <header> 
+                    <h1 class="archive-entry-title">
+                        <a href="./python-realtime.html" rel="bookmark" title="Permalink to python realtime">python realtime</a>
+                    </h1> 
+                </header>
+                <footer class="post-info">
+                    <abbr>
+                      周日 21 七月 2013 
+                         By <a class="url fn" href="./author/tao-ke-qin.html">陶克勤</a>
+  
+                    </abbr>
+                    <div class="entry-summary"> <div class="section" id="id1">
+<h2>声明</h2>
+<p>本文是基于一篇英文文章翻译过来的。</p>
+<p>原文链接：<a class="reference external" href="http://mrjoes.github.io/2013/06/21/python-realtime.html">http://mrjoes.github.io/2013/06/21/python-realtime.html</a></p>
+<p>原作者： Serge Koval</p>
+<p>License：Creative Commons attribution-noncommercial-sharealike License</p>
+</div>
+<div class="section" id="id2">
+<h2>简介</h2>
+<p>最近我参与了 <a class="reference external" href="http://www.kickstarter.com/projects/1223051718/practical-flask-book-project">Flask book</a> 的一次聚会,涉及到些realtime相关的问题-它是如何工作的，
+如何整合实时部分与传统的WSGI应用，如何组织应用程序代码等。</p>
+<p>我们使用Google Hangouts，原本打算将我们的Hangouts视频录下来，但失败了。
+所以，我决定还是写一篇详尽的博客文章，其中包括一些基础知识，以及简短的介绍用Python异步编程等。</p>
+</div>
+<div class="section" id="id3">
+<h2>一点理论知识</h2>
+<p>让我们尝试解决服务器&quot;推送&quot;的问题。web都是拉取数据 - 浏览器发出请求到服务器，服务器会产生并发送回响应。
+但是，如果有需要将数据主动从服务器推送到浏览器该怎么办呢？</p>
+<p>解决方法很简单：浏览器发出AJAX请求到服务器，并要求更新。
+虽然看起来这个是常用浏览器和服务器之间推送办法，但有一个问题 ...</p></div>
+                    <a href="./python-realtime.html">read more</a></div>
+                </footer><!-- /.post-info -->
+                <!-- /.entry-content -->
+            </article>
+        </li>
+        
+        <li>
+            <article class="archive">
+                <header> 
+                    <h1 class="archive-entry-title">
+                        <a href="./write-better-code.html" rel="bookmark" title="Permalink to 写出更好的代码">写出更好的代码</a>
+                    </h1> 
+                </header>
+                <footer class="post-info">
+                    <abbr>
+                      周二 05 六月 2012 
+                         By <a class="url fn" href="./author/tao-ke-qin.html">陶克勤</a>
+  
+                    </abbr>
+                    <div class="entry-summary"> <p>最近想看两本书&lt;&lt;数学之美&gt;&gt;和&lt;&lt;暗时间&gt;&gt;
+其实这两本书的内容都有零散的看过一些,不过当可以买到纸质书的时候,还是有很想买的欲望.
+再次在看暗时间的是否不幸的我点进了这个链接: <a class="reference external" href="http://www.joelonsoftware.com/">http://www.joelonsoftware.com/</a>
+更不幸的是我点进了下面的一篇文章: <a class="reference external" href="http://www.joelonsoftware.com/articles/fog0000000043.html">The Joel Test: 12 Steps to Better Code</a></p>
+<p>看了一下时间,这篇文章已经是2000年的时候写的了,在那个时候就已经用到了下面的这些技术,我只能说程序员的世界发展真的很慢,因为这些技术现在都还在用.
+而且有的开发可能现在都还没有完整的run他的这些步骤.</p>
+<p>我想来回答Joel的这些问题,在现代的一个背景下面,在我的知识范围内来看看我能想到写什么?</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Do you use source control?</dt>
+<dd><p class="first last">这个必须有.如果你相对比较怀旧一点,用SVN吧.
+如果你又不想依赖于中心服务器,不想看没有个commit log都要从服务器拉取,用分布式的hg 和 git.
+如果想更加的现代,可以看看bitbucket.org 和 github.com ...</p></dd></dl></li></ul>
+                    <a href="./write-better-code.html">read more</a></div>
+                </footer><!-- /.post-info -->
+                <!-- /.entry-content -->
+            </article>
+        </li>
+        
+        <li>
+            <article class="archive">
+                <header> 
+                    <h1 class="archive-entry-title">
+                        <a href="./test-pattern-cpp0x.html" rel="bookmark" title="Permalink to 最近对编程的一些感想">最近对编程的一些感想</a>
+                    </h1> 
+                </header>
+                <footer class="post-info">
+                    <abbr>
+                      周一 04 六月 2012 
+                         By <a class="url fn" href="./author/tao-ke-qin.html">陶克勤</a>
+  
+                    </abbr>
+                    <div class="entry-summary"> <div class="section" id="id2">
+<h2>1, 测试很重要.</h2>
+<p>接手一堆没有测试的代码,感觉有点害怕.
+现在每当拿到一个代码,喜欢干的事情就是先跑他的单元测试.
+单元测试全部通过,说明什么呢?
+我认为至少说明基本想要完成的功能是没有问题的.</p>
+<p>有了测试代码,其实都可以不需要有太详细的文档了,
+合适的命名,加上恰当范围的测试覆盖如果你想对代码有个基本认识应该很简单
+而且你对你仅有的认识会比较有信心,写代码的人自己都在怎么用这样一些接口,自己也可以沿袭这个风格进行.</p>
+<p>同样的,如果你要把一部分代码给别人,怎么告诉他你代码当前的状态呢?</p>
+<p>如果你的代码有测试,那么你将会很自信.</p>
+<p>现在我的回答会是:
+我的测试覆盖90%,如果文档不能满足你的需求,麻烦你看我的测试,如果你发现了测试没有测的好功能,恭喜你这是个suprise!</p>
+</div>
+<div class="section" id="id3">
+<h2>2, 设计模式无处不再.</h2>
+<p>手上有本设计模式的书,一遍一遍的看,每个模式每次看都有不同的认识.
+其实代码中真的已经用了很多和模式对等的东西,只是有了这么一个理论摆在这里感觉真的很方便和别人交流.
+对于再次利用总结出来的牛逼设计模式,也比较能给自己信心.</p>
+</div>
+<div class="section" id="c-0x">
+<h2>3, 期待c++0x早日进入产品代码</h2>
+<p>当前产品代码中还是有大量的用到boost::function, bind, shared_ptr等,毕竟不太需要编译器对新语言的特别支持.
+期待完全支持c++0x的编译器出来,期待以后产品代码中都用这些东西.现在让自己开始熟悉这些.</p>
+<p>今天和朋友讨论了一个问题, 感觉很有意思 ...</p></div>
+                    <a href="./test-pattern-cpp0x.html">read more</a></div>
+                </footer><!-- /.post-info -->
+                <!-- /.entry-content -->
+            </article>
+        </li>
+        
+        <li>
+            <article class="archive">
+                <header> 
+                    <h1 class="archive-entry-title">
+                        <a href="./lambda-in-c++0x.html" rel="bookmark" title="Permalink to c++0x_lambda">c++0x_lambda</a>
+                    </h1> 
+                </header>
+                <footer class="post-info">
+                    <abbr>
+                      周三 30 五月 2012 
+                         By <a class="url fn" href="./author/tao-ke-qin.html">陶克勤</a>
+  
+                    </abbr>
+                    <div class="entry-summary"> <p>看了一下,这些关于lambda的讨论,貌似都是在09年左右,不过我感觉还是很有价值的.</p>
+<p>权威文档的话参考SPEC <a class="footnote-reference" href="#id5" id="id1">[1]</a></p>
+<p>从SPEC来看,lambda的语法上还是很多细节需要注意的,但是要想掌握其用法应该稍加练习就可以了.</p>
+<p>第二个网页 <a class="footnote-reference" href="#id6" id="id2">[2]</a> 讲一些vc10对lambda的支持,从这篇文章基本上可以看到lambda在使用上的全貌.</p>
+<p>第三个页面 <a class="footnote-reference" href="#id7" id="id3">[3]</a> 我比较喜欢,stackoverflow你懂的.</p>
+<p>其实boost中已经有lambda的实现了,之前有练习过用法,没有太深入.
+如果我没有记错的话boost::lambda使用上更加简洁,但限制比较多,但是功能没有std::lambda强大.
+需要看看各个编译器对std::lambda的支持程度了,如果这个程度到了一个比较好的阶段,估计很多人都只会用std的了.</p>
+<p>看看网页 <a class="footnote-reference" href="#id8" id="id4">[4]</a> ,当我们有了auto, lambda再加上我们牛X的stl,代码写起来有木有感觉想在写脚本?
+worth to try!</p>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>SPEC: <a class="reference external" href="http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2009/n2927.pdf">http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2009/n2927 ...</a></td></tr></tbody></table>
+                    <a href="./lambda-in-c++0x.html">read more</a></div>
+                </footer><!-- /.post-info -->
+                <!-- /.entry-content -->
+            </article>
+        </li>
+        
+        <li>
+            <article class="archive">
+                <header> 
+                    <h1 class="archive-entry-title">
+                        <a href="./about-clang.html" rel="bookmark" title="Permalink to 接触Clang">接触Clang</a>
+                    </h1> 
+                </header>
+                <footer class="post-info">
+                    <abbr>
+                      周日 27 五月 2012 
+                         By <a class="url fn" href="./author/tao-ke-qin.html">陶克勤</a>
+  
+                    </abbr>
+                    <div class="entry-summary"> <p>以前有接触过Clang,感觉很棒,今天看了这个视频:</p>
+<p><a class="reference external" href="http://channel9.msdn.com/Events/GoingNative/GoingNative-2012/Clang-Defending-C-from-Murphy-s-Million-Monkeys">http://channel9.msdn.com/Events/GoingNative/GoingNative-2012/Clang-Defending-C-from-Murphy-s-Million-Monkeys</a></p>
+<p>对Clang更加有兴趣了.
+演讲者讲得不错,很有激情,很有感染力.</p>
+<p>两个方向我觉得可以研究一下:</p>
+<ul class="simple">
+<li>代码重构</li>
+<li>静态分析</li>
+</ul>
+<p>其实对GCC的了解本来也不是很深入,常用的就是优化于警告级别选项而已.希望以后花点时间认真看看Clang.</p>
+
+                    <a href="./about-clang.html">read more</a></div>
+                </footer><!-- /.post-info -->
+                <!-- /.entry-content -->
+            </article>
+        </li>
+        
+        <li>
+            <article class="archive">
+                <header> 
+                    <h1 class="archive-entry-title">
+                        <a href="./xunit-and-googletest.html" rel="bookmark" title="Permalink to googletest和xUnit架构">googletest和xUnit架构</a>
+                    </h1> 
+                </header>
+                <footer class="post-info">
+                    <abbr>
+                      周五 06 四月 2012 
+                         By <a class="url fn" href="./author/tao-ke-qin.html">陶克勤</a>
+  
+                    </abbr>
+                    <div class="entry-summary"> <p>对于C++的测试，现在我知道两个cppunit和googletest。虽然他们都是写写xUnit构的，但是我偏向于喜欢googletest，可能是自己用得比较熟悉的原因。</p>
+<div class="section" id="xunix">
+<h2>什么是xUnix架构</h2>
+<p>我的一些简单理解，最先那个谁写了一个测试框架，然后大家都用，并且大家后来都觉得这种方式还不错，就这样成了惯例，然后在其他语言也有人根据这种模式写出类似的测试框架，不断的发展就成了xUnit框架，狭义的来讲x泛指各种语言。</p>
+<p>xUnit有一些简单的概念：</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Testcase 测试用例</dt>
+<dd><p class="first last">单元测试的基本单元，用来描述一个测试点
+完整的测试由很多的测试用例构成</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Testfixture 测试固件（测试上下文）</dt>
+<dd><p class="first last">我觉得翻译为 <strong>测试上下文</strong> 比较好理解,根据这个翻译就可以看出，测试上下         文就是为了给测试用例提供一个上下文。</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Testsuit 测试套件</dt>
+<dd><p class="first last">把很多测试用例放到一起，共享相同的测试上下文，这就是一测试套件</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Test execution 测试执行</dt>
+<dd><p class="first last">规定了测试用例的执行策略，比如为每个测试用例先建立测试上下文，然后运行测    试用例，对上下文进行清理</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Test Assertions 测试断言</dt>
+<dd><p class="first last">断言这个比较容易理解，即使不再测试架构里面也有用。</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>满足上面的所以概念，他就xUnit了 ...</p></div>
+                    <a href="./xunit-and-googletest.html">read more</a></div>
+                </footer><!-- /.post-info -->
+                <!-- /.entry-content -->
+            </article>
+        </li>
+        
+        <li>
+            <article class="archive">
+                <header> 
+                    <h1 class="archive-entry-title">
+                        <a href="./a-compile-problem-of-googlemock.html" rel="bookmark" title="Permalink to googlemock中遇到pthread问题">googlemock中遇到pthread问题</a>
+                    </h1> 
+                </header>
+                <footer class="post-info">
+                    <abbr>
+                      周一 02 四月 2012 
+                         By <a class="url fn" href="./author/tao-ke-qin.html">陶克勤</a>
+  
+                    </abbr>
+                    <div class="entry-summary"> <p>今天在搭建googlemock的环境，以前都没有出过问题，今天居然碰到了，
+直接checkout googlemock的代码，然后到make文件夹下面直接make，居然连接的时候连接不上，报pthread中的东西找不到。
+各种check：</p>
+<ul>
+<li><dl class="first docutils">
+<dt>连接参数是否有 -lpthread</dt>
+<dd><p class="first last">有</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>locate pthread</dt>
+<dd><p class="first last">系统中也有</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>g++ -print-search-dirs</dt>
+<dd><p class="first last">前面找到的库也在路径中</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>直接把找到的pthread路径用-L写在makefile中</dt>
+<dd><p class="first last">还是报错</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>经过上面的步骤我觉得应该是能够解决我的问题的，什么状况，感觉超出了我的能力。。。</p>
+<p>经过各种google，都没有找出问题来。</p>
+<p>没办法了，各种尝试，记得最后成功的方式：把-lpthread放到了连接参数的后面，看下面的diff</p>
+<div class="highlight"><pre>--- Makefile    (revision 404)
++++ Makefile    (working copy)
+@@ -95,4 +95,4 @@
+$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/gmock_test.cc
+
+gmock_test : gmock_test.o ...</pre></div>
+                    <a href="./a-compile-problem-of-googlemock.html">read more</a></div>
+                </footer><!-- /.post-info -->
+                <!-- /.entry-content -->
+            </article>
+        </li>
+    </ol><!-- /#posts-list -->
+</div>
+<p class="paginator">
+    Page 1 / 1
+</p>
+</section><!-- /#content -->
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href=".">陶克勤</a> (2012)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', "UA-32182203-1"]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>陶克勤的博客 <small>googletest</small></title>
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="./theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="./theme/css/font-awesome.css" type="text/css" />
+        <meta charset="utf-8" />
+      
+
+        <!-- Javascript-->
+        <script src="./theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li><a href=".">Blog</a> </li>
+          <li><a href="./archives.html">Archive</a></li>
+          <li class="current"><a href="./tags.html">Tags</a> </li>
+          <li><a href="./">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href=".">陶克勤的博客 <strong></strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+            <li><a href="./pages/about-taokeqin.html">关于</a></li>
+            <li><a href="./pages/toolbox.html">toolbox</a></li>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+        
+<section id="content">
+<div class="posts">
+    <ol id="post-list">
+        
+        <li>
+            <article class="archive">
+                <header> 
+                    <h1 class="archive-entry-title">
+                        <a href="./xunit-and-googletest.html" rel="bookmark" title="Permalink to googletest和xUnit架构">googletest和xUnit架构</a>
+                    </h1> 
+                </header>
+                <footer class="post-info">
+                    <abbr>
+                      周五 06 四月 2012 
+                         By <a class="url fn" href="./author/tao-ke-qin.html">陶克勤</a>
+  
+                    </abbr>
+                    <div class="entry-summary"> <p>对于C++的测试，现在我知道两个cppunit和googletest。虽然他们都是写写xUnit构的，但是我偏向于喜欢googletest，可能是自己用得比较熟悉的原因。</p>
+<div class="section" id="xunix">
+<h2>什么是xUnix架构</h2>
+<p>我的一些简单理解，最先那个谁写了一个测试框架，然后大家都用，并且大家后来都觉得这种方式还不错，就这样成了惯例，然后在其他语言也有人根据这种模式写出类似的测试框架，不断的发展就成了xUnit框架，狭义的来讲x泛指各种语言。</p>
+<p>xUnit有一些简单的概念：</p>
+<ul>
+<li><dl class="first docutils">
+<dt>Testcase 测试用例</dt>
+<dd><p class="first last">单元测试的基本单元，用来描述一个测试点
+完整的测试由很多的测试用例构成</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Testfixture 测试固件（测试上下文）</dt>
+<dd><p class="first last">我觉得翻译为 <strong>测试上下文</strong> 比较好理解,根据这个翻译就可以看出，测试上下         文就是为了给测试用例提供一个上下文。</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Testsuit 测试套件</dt>
+<dd><p class="first last">把很多测试用例放到一起，共享相同的测试上下文，这就是一测试套件</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Test execution 测试执行</dt>
+<dd><p class="first last">规定了测试用例的执行策略，比如为每个测试用例先建立测试上下文，然后运行测    试用例，对上下文进行清理</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Test Assertions 测试断言</dt>
+<dd><p class="first last">断言这个比较容易理解，即使不再测试架构里面也有用。</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>满足上面的所以概念，他就xUnit了 ...</p></div>
+                    <a href="./xunit-and-googletest.html">read more</a></div>
+                </footer><!-- /.post-info -->
+                <!-- /.entry-content -->
+            </article>
+        </li>
+    </ol><!-- /#posts-list -->
+</div>
+<p class="paginator">
+    Page 1 / 1
+</p>
+</section><!-- /#content -->
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href=".">陶克勤</a> (2012)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', "UA-32182203-1"]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>
