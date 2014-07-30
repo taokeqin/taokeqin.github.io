@@ -365,7 +365,7 @@ Greenlet 基本上就是移植Stackless的硬切换模式。</p>
 在这种情况下，业务层完全不需要异步 - 接收到的任务，对其进行处理，并发送回响应。
 因为worker是无状态的，就可以并行地启动大量的workers来增加应用程序整体的吞吐量的。</p>
 <p>下面看他是如何工作的，架构图：</p>
-<img alt="" src="static\images\frontend-worker.png" />
+<img alt="" src="images\frontend-worker.png" />
 <p>在这个例子中，使用Redis做同步传输，但是这会有单点故障，从可靠性角度来看不是太好。
 此外，Redis的队列被用来向workers推送请求，并接收他们的响应。</p>
 <p>由于网络层是有状态的，运行在应用程序前面负载均衡程序为了满足实时连接将使用粘性sessions（客户端应该每次去到相同的服务器）。</p>
@@ -433,7 +433,7 @@ Greenlet 基本上就是移植Stackless的硬切换模式。</p>
 <p>完整的 <a class="reference external" href="https://gist.github.com/mrjoes/3284402">例子在这里</a> 。</p>
 <p>broker是无状态的 - 他们真的不存储任何特定于应用程序的状态，
 这样你就可根据不断增加的负载启动你需要数量的broker，只要负载正确配置好了。</p>
-<img alt="" src="static\images\push-servers.png" />
+<img alt="" src="images\push-servers.png" />
 </div>
 <div class="section" id="id25">
 <h2>游戏</h2>
@@ -504,18 +504,18 @@ Tornado可以解密令牌，提取出用户ID，然后从数据库进行查询�
 但是，如果我们希望有两台服务器并且让玩家分布于它们之间呢？
 由于他们不知道对方的状态，连接到第一台服务器的玩家将不能和第二台服务器上的玩家游戏。</p>
 <p>根据游戏规则的复杂性，它是可以使用全连接的拓扑结构 - 每一个服务器连接到每一个其他的服务器：</p>
-<img alt="" src="static\images\game-interconnect.png" />
+<img alt="" src="images\game-interconnect.png" />
 <p>在这种情况下，游戏状态应该需要信息以确定玩家身份，管理他的游戏状态，
 并且把游戏相关的信息发送到相应的服务器，这样状态就可以转发给实际客户端。</p>
 <p>虽然这种方法有用，但异步应用程序是单线程的，更好的方式是将游戏逻辑和相关状态分离成单独的服务器应用程序，
 把实时部分作为游戏服务器和客户端之间的智能适配器。</p>
 <p>因此，它可以是这样的：</p>
-<img alt="" src="static\images\realtime-game-servers.png" />
+<img alt="" src="images\realtime-game-servers.png" />
 <p>客户端连接到一个实时服务器，通过验证，获取正在运行的游戏列表（通过游戏服务器和实时服务器之间的一些共享状态）。
 当客户端选择特定的游戏玩时，它会发送请求到实时服务器，然后在和真正部署该游戏服务器通信。
 虽然这看起来和完全互连解决方案非常相似，但是在同一柜的服务器不需要与对方直接交互，这提供了有效的隔离状态。
 伸缩也很简单 - 增加更多的的实时服务器或游戏服务器，由他们的状态是孤立的就易于管理。</p>
-<p>另外，对于这个任务，我会使用ZeroMQ（AMQP总线）而不是Redis的，因为Redis的成为单点故障。</p>
+<p>另外，对于这个任务，我会使用ZeroMQ（AMQP总线）而不是Redis的，因为Redis会成为单点故障。</p>
 <p>游戏服务器不会暴露在Internet中，他们只可以通过实时服务器访问。</p>
 <p>我已经说过了，分布式应用程序的伸缩性就看 ** 状态管理是否高效 ** 。</p>
 </div>
