@@ -1,7 +1,9 @@
-<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
         <title>陶克勤的博客 <small>googlemock</small></title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Fonts -->
         <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
@@ -11,8 +13,6 @@
         <link rel="stylesheet" href="http://taokeqin.com/theme/css/main.css" type="text/css" />
         <link rel="stylesheet" href="http://taokeqin.com/theme/css/pygments.css" type="text/css" />
         <link rel="stylesheet" href="http://taokeqin.com/theme/css/font-awesome.css" type="text/css" />
-        <meta charset="utf-8" />
-      
 
         <!-- Javascript-->
         <script src="http://taokeqin.com/theme/js/invisible-menu-scroll.js"></script>
@@ -34,11 +34,11 @@
         </ol>
       </div>
         <header id="banner" class="body">
-                <div class="banner"><a href="http://taokeqin.com">陶克勤的博客 <strong></strong></a></div>
+                <div class="banner"><a href="http://taokeqin.com">陶克勤的博客 <strong>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</strong></a></div>
         </header><!-- /#banner -->
         <nav id="menu"><ul>
-            <li><a href="http://taokeqin.com/pages/about-taokeqin.html">关于</a></li>
-            <li><a href="http://taokeqin.com/pages/toolbox.html">toolbox</a></li>
+            <li><a href="http://taokeqin.com/pages/about-taokeqin.html">关于我</a></li>
+            <li><a href="http://taokeqin.com/pages/toolbox.html">工具箱</a></li>
         </ul></nav><!-- /#menu -->
         <div class="box">
         
@@ -64,40 +64,8 @@
 各种check：</p>
 <ul>
 <li><dl class="first docutils">
-<dt>连接参数是否有 -lpthread</dt>
-<dd><p class="first last">有</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>locate pthread</dt>
-<dd><p class="first last">系统中也有</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>g++ -print-search-dirs</dt>
-<dd><p class="first last">前面找到的库也在路径中</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>直接把找到的pthread路径用-L写在makefile中</dt>
-<dd><p class="first last">还是报错</p>
-</dd>
-</dl>
-</li>
-</ul>
-<p>经过上面的步骤我觉得应该是能够解决我的问题的，什么状况，感觉超出了我的能力。。。</p>
-<p>经过各种google，都没有找出问题来。</p>
-<p>没办法了，各种尝试，记得最后成功的方式：把-lpthread放到了连接参数的后面，看下面的diff</p>
-<div class="highlight"><pre>--- Makefile    (revision 404)
-+++ Makefile    (working copy)
-@@ -95,4 +95,4 @@
-$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/gmock_test.cc
-
-gmock_test : gmock_test.o ...</pre></div>
-                    <a href="http://taokeqin.com/a-compile-problem-of-googlemock.html">read more</a></div>
+<dt>连接参数是否有 ...</dt></dl></li></ul>
+                    <a class="readmore" href="http://taokeqin.com/a-compile-problem-of-googlemock.html">Read more →</a></div>
                 </footer><!-- /.post-info -->
                 <!-- /.entry-content -->
             </article>
@@ -111,7 +79,7 @@ gmock_test : gmock_test.o ...</pre></div>
             <hr/>
             <footer id="contentinfo" class="footer">
                 <div>
-                    <a href="http://taokeqin.com">陶克勤</a> (2012)
+                    <a href="http://taokeqin.com">陶克勤</a> (2012-2015)
                 </div>
                 <div>
                     powered by <a href="http://getpelican.com/">Pelican</a>

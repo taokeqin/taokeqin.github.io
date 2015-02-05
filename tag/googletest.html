@@ -1,7 +1,9 @@
-<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
         <title>陶克勤的博客 <small>googletest</small></title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Fonts -->
         <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
@@ -11,8 +13,6 @@
         <link rel="stylesheet" href="http://taokeqin.com/theme/css/main.css" type="text/css" />
         <link rel="stylesheet" href="http://taokeqin.com/theme/css/pygments.css" type="text/css" />
         <link rel="stylesheet" href="http://taokeqin.com/theme/css/font-awesome.css" type="text/css" />
-        <meta charset="utf-8" />
-      
 
         <!-- Javascript-->
         <script src="http://taokeqin.com/theme/js/invisible-menu-scroll.js"></script>
@@ -34,11 +34,11 @@
         </ol>
       </div>
         <header id="banner" class="body">
-                <div class="banner"><a href="http://taokeqin.com">陶克勤的博客 <strong></strong></a></div>
+                <div class="banner"><a href="http://taokeqin.com">陶克勤的博客 <strong>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</strong></a></div>
         </header><!-- /#banner -->
         <nav id="menu"><ul>
-            <li><a href="http://taokeqin.com/pages/about-taokeqin.html">关于</a></li>
-            <li><a href="http://taokeqin.com/pages/toolbox.html">toolbox</a></li>
+            <li><a href="http://taokeqin.com/pages/about-taokeqin.html">关于我</a></li>
+            <li><a href="http://taokeqin.com/pages/toolbox.html">工具箱</a></li>
         </ul></nav><!-- /#menu -->
         <div class="box">
         
@@ -62,43 +62,8 @@
                     <div class="entry-summary"> <p>对于C++的测试，现在我知道两个cppunit和googletest。虽然他们都是写写xUnit构的，但是我偏向于喜欢googletest，可能是自己用得比较熟悉的原因。</p>
 <div class="section" id="xunix">
 <h2>什么是xUnix架构</h2>
-<p>我的一些简单理解，最先那个谁写了一个测试框架，然后大家都用，并且大家后来都觉得这种方式还不错，就这样成了惯例，然后在其他语言也有人根据这种模式写出类似的测试框架，不断的发展就成了xUnit框架，狭义的来讲x泛指各种语言。</p>
-<p>xUnit有一些简单的概念：</p>
-<ul>
-<li><dl class="first docutils">
-<dt>Testcase 测试用例</dt>
-<dd><p class="first last">单元测试的基本单元，用来描述一个测试点
-完整的测试由很多的测试用例构成</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>Testfixture 测试固件（测试上下文）</dt>
-<dd><p class="first last">我觉得翻译为 <strong>测试上下文</strong> 比较好理解,根据这个翻译就可以看出，测试上下         文就是为了给测试用例提供一个上下文。</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>Testsuit 测试套件</dt>
-<dd><p class="first last">把很多测试用例放到一起，共享相同的测试上下文，这就是一测试套件</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>Test execution 测试执行</dt>
-<dd><p class="first last">规定了测试用例的执行策略，比如为每个测试用例先建立测试上下文，然后运行测    试用例，对上下文进行清理</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>Test Assertions 测试断言</dt>
-<dd><p class="first last">断言这个比较容易理解，即使不再测试架构里面也有用。</p>
-</dd>
-</dl>
-</li>
-</ul>
-<p>满足上面的所以概念，他就xUnit了 ...</p></div>
-                    <a href="http://taokeqin.com/xunit-and-googletest.html">read more</a></div>
+<p>我的一些简单理解，最先那个谁写了一个测试框架，然后大家都用 ...</p></div>
+                    <a class="readmore" href="http://taokeqin.com/xunit-and-googletest.html">Read more →</a></div>
                 </footer><!-- /.post-info -->
                 <!-- /.entry-content -->
             </article>
@@ -112,7 +77,7 @@
             <hr/>
             <footer id="contentinfo" class="footer">
                 <div>
-                    <a href="http://taokeqin.com">陶克勤</a> (2012)
+                    <a href="http://taokeqin.com">陶克勤</a> (2012-2015)
                 </div>
                 <div>
                     powered by <a href="http://getpelican.com/">Pelican</a>

@@ -1,7 +1,7 @@
 ﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>最近对编程的一些感想</title>
+        <title>rust hello world</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Fonts -->
@@ -44,48 +44,70 @@
 <section id="content" class="body">
   <header class="post">
     <h1 class="entry-title">
-      最近对编程的一些感想
+      rust hello world
     </h1>
   </header>
   <footer class="post-info">
     <abbr>
-      周一 04 六月 2012 
+      周二 14 十月 2014 
          By <a class="url fn" href="http://taokeqin.com/author/tao-ke-qin.html">陶克勤</a>
   
     </abbr>
   </footer><!-- /.post-info -->
   <div class="entry-content">
-    <div class="section" id="id2">
-<h2>1, 测试很重要.</h2>
-<p>接手一堆没有测试的代码,感觉有点害怕.
-现在每当拿到一个代码,喜欢干的事情就是先跑他的单元测试.
-单元测试全部通过,说明什么呢?
-我认为至少说明基本想要完成的功能是没有问题的.</p>
-<p>有了测试代码,其实都可以不需要有太详细的文档了,
-合适的命名,加上恰当范围的测试覆盖如果你想对代码有个基本认识应该很简单
-而且你对你仅有的认识会比较有信心,写代码的人自己都在怎么用这样一些接口,自己也可以沿袭这个风格进行.</p>
-<p>同样的,如果你要把一部分代码给别人,怎么告诉他你代码当前的状态呢?</p>
-<p>如果你的代码有测试,那么你将会很自信.</p>
-<p>现在我的回答会是:
-我的测试覆盖90%,如果文档不能满足你的需求,麻烦你看我的测试,如果你发现了测试没有测的好功能,恭喜你这是个suprise!</p>
+    <div class="section" id="hi">
+<h2>HI</h2>
+<p>第一次看到rust这个语言是在一个Lang.Next的视频上，当时有一个对话场景，上面坐着4个人再回答下面的提问！</p>
+<p>这四个人所负责的语言分别是：C++, D, rust, go</p>
+<p>瞬间发现自己居然不知道rust这个语言呢！</p>
 </div>
-<div class="section" id="id3">
-<h2>2, 设计模式无处不再.</h2>
-<p>手上有本设计模式的书,一遍一遍的看,每个模式每次看都有不同的认识.
-其实代码中真的已经用了很多和模式对等的东西,只是有了这么一个理论摆在这里感觉真的很方便和别人交流.
-对于再次利用总结出来的牛逼设计模式,也比较能给自己信心.</p>
+<div class="section" id="id1">
+<h2>我为什么想试试这个语言</h2>
+<p>rust定位是系统编程语言，强类型，强调安全，强调并行, 不用GC, 不用异常</p>
 </div>
-<div class="section" id="c-0x">
-<h2>3, 期待c++0x早日进入产品代码</h2>
-<p>当前产品代码中还是有大量的用到boost::function, bind, shared_ptr等,毕竟不太需要编译器对新语言的特别支持.
-期待完全支持c++0x的编译器出来,期待以后产品代码中都用这些东西.现在让自己开始熟悉这些.</p>
-<p>今天和朋友讨论了一个问题, 感觉很有意思: <strong>什么样的特性应该或者可以被加入新的标准中?</strong></p>
-<p>我的一个认识就是:</p>
-<p>一旦一个语言已经标准化,就意味着这个语言的核心集合已经确定,并且在以后的发展会考虑强烈的需求向后兼容.
-所以新的标准不会加入太多的东西,而且加入的都是一些对广大开发者共同的需求,这些新加的特性要么改进语言的用法,要么适应当前业界的一个强烈需求.
-而且不回break以前的代码.
-比如auto, lambda, concurency.
-核心语言要足够的简单(当然c++当前已经很不简单),一些更高级的用法用库来实现.比如STL, boost</p>
+<div class="section" id="rust">
+<h2>怎么安装rust</h2>
+<p>目前的安装方式在linux比较暴力，windows还好，直接下载安装包就可以了</p>
+<p>linux:</p>
+<div class="highlight"><pre><span class="nv">$ </span>curl -s https://static.rust-lang.org/rustup.sh <span class="p">|</span> sudo sh
+</pre></div>
+<p>这个安装脚本是会默认安装两个东西：rust， cargo</p>
+<p>cargo是rust的代码依赖管理和build工具，对于习惯了make，cmake这样工具的人，还是会觉得cargo比较方便些。
+后面详细分析一下cargo的使用，目前cargo还在开发阶段，特性不多，容易掌握！</p>
+<p>官方推荐学习,练习rust，一开始就要使用cargo来做工程管理。
+所以我在使用过一次rustc后，所有的代码就都用cargo了。</p>
+</div>
+<div class="section" id="rustc-hello-world">
+<h2>rustc hello world</h2>
+<p>安装好了编译器之后第一步就来hello world</p>
+<p>新建文件： main.rs</p>
+<div class="highlight"><pre><span class="k">fn</span><span class="w"> </span><span class="n">main</span><span class="p">(){</span><span class="w"></span>
+<span class="w">        </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;Hello World&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+<p>运行命令进行编译</p>
+<div class="highlight"><pre><span class="nv">$rustc</span> main.rs
+</pre></div>
+<p>可以看到生成的二进制文件，直接运行就好了。</p>
+</div>
+<div class="section" id="cargo-hello-world">
+<h2>cargo hello world</h2>
+<p>cargo有直接的工程创建模板，或者可以手动按照cargo的约定进行代码布局</p>
+<p>约定的好处就是大家干出来的结果都一样. 不像make，每个人的工程都不一样！</p>
+<div class="highlight"><pre>cargo new hello_world --bin
+</pre></div>
+<p>找一个你放代码的目录，运行上面的命令，cargo就会帮你生成一个工程模板。
+看看目录里面都有写什么？</p>
+<p>src里面的源代码，写代码就写在里面！</p>
+<p>Cargo.toml是cargo的配置文件，可以看到，这里没并没有指明有那些源文件？？</p>
+<p>很好奇rustc的编译链接过程？后面详细分析，至少来看比c/c++简化了程序员的决策。</p>
+<p>编译产生二进制运行文件</p>
+<div class="highlight"><pre>cargo build
+</pre></div>
+<p>会生成一个target目录，可执行文件也在里面，直接运行就好了，这样build也很不错，产生的中间文件都在src的外面，代码比较整洁！</p>
+<div class="highlight"><pre>cargo clean
+</pre></div>
+<p>就轻易的清理掉了build的输出，看看目录，target目录消失了！！</p>
 </div>
 
   </div><!-- /.entry-content -->

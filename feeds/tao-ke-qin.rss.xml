@@ -1,5 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>陶克勤的博客</title><link>http://taokeqin.com/</link><description></description><atom:link href="taokeqin.com/feeds%5Ctao-ke-qin.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 21 Jul 2013 00:00:00 +0200</lastBuildDate><item><title>python realtime</title><link>http://taokeqin.com/python-realtime.html</link><description>&lt;div class="section" id="id1"&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>陶克勤的博客</title><link>http://taokeqin.com/</link><description>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</description><atom:link href="taokeqin.com/feeds%5Ctao-ke-qin.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 14 Oct 2014 10:17:00 +0200</lastBuildDate><item><title>rust hello world</title><link>http://taokeqin.com/rust-hello.html</link><description>&lt;div class="section" id="hi"&gt;
+&lt;h2&gt;HI&lt;/h2&gt;
+&lt;p&gt;第一次看到rust这个语言是在一个Lang.Next的视频上，当时有一个对话场景，上面坐着4个人再回答下面的提问！&lt;/p&gt;
+&lt;p&gt;这四个人所负责的语言分别是：C++, D, rust, go&lt;/p&gt;
+&lt;p&gt;瞬间发现自己居然不知道rust这个语言呢！&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id1"&gt;
+&lt;h2&gt;我为什么想试试这个语言&lt;/h2&gt;
+&lt;p&gt;rust定位是系统编程语言，强类型，强调安全，强调并行, 不用GC, 不用异常&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="rust"&gt;
+&lt;h2&gt;怎么安装rust&lt;/h2&gt;
+&lt;p&gt;目前的安装方式在linux比较暴力，windows还好，直接下载安装包就可以了&lt;/p&gt;
+&lt;p&gt;linux:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;curl -s https://static.rust-lang.org/rustup.sh &lt;span class="p"&gt;|&lt;/span&gt; sudo sh
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这个安装脚本是会默认安装两个东西：rust， cargo&lt;/p&gt;
+&lt;p&gt;cargo是rust的代码依赖管理和build工具，对于习惯了make，cmake这样工具的人，还是会觉得cargo比较方便些。
+后面详细分析一下cargo的使用，目前cargo还在开发阶段，特性不多，容易掌握！&lt;/p&gt;
+&lt;p&gt;官方推荐学习,练习rust，一开始就要使用cargo来做工程管理。
+所以我在使用过一次rustc后，所有的代码就都用cargo了。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="rustc-hello-world"&gt;
+&lt;h2&gt;rustc hello world&lt;/h2&gt;
+&lt;p&gt;安装好了编译器之后第一步就来hello world&lt;/p&gt;
+&lt;p&gt;新建文件： main.rs&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;fn&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nb"&gt;println&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Hello World&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;运行命令进行编译&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nv"&gt;$rustc&lt;/span&gt; main.rs
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;可以看到生成的二进制文件，直接运行就好了。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="cargo-hello-world"&gt;
+&lt;h2&gt;cargo hello world&lt;/h2&gt;
+&lt;p&gt;cargo有直接的工程创建模板，或者可以手动按照cargo的约定进行代码布局&lt;/p&gt;
+&lt;p&gt;约定的好处就是大家干出来的结果都一样. 不像make，每个人的工程都不一样！&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;cargo new hello_world --bin
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;找一个你放代码的目录，运行上面的命令，cargo就会帮你生成一个工程模板。
+看看目录里面都有写什么？&lt;/p&gt;
+&lt;p&gt;src里面的源代码，写代码就写在里面！&lt;/p&gt;
+&lt;p&gt;Cargo.toml是cargo的配置文件，可以看到，这里没并没有指明有那些源文件？？&lt;/p&gt;
+&lt;p&gt;很好奇rustc的编译链接过程？后面详细分析，至少来看比c/c++简化了程序员的决策。&lt;/p&gt;
+&lt;p&gt;编译产生二进制运行文件&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;cargo build
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;会生成一个target目录，可执行文件也在里面，直接运行就好了，这样build也很不错，产生的中间文件都在src的外面，代码比较整洁！&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;cargo clean
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;就轻易的清理掉了build的输出，看看目录，target目录消失了！！&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">陶克勤</dc:creator><pubDate>Tue, 14 Oct 2014 10:17:00 +0200</pubDate><guid>tag:taokeqin.com,2014-10-14:rust-hello.html</guid><category>rust</category><category>hello</category></item><item><title>python realtime</title><link>http://taokeqin.com/python-realtime.html</link><description>&lt;div class="section" id="id1"&gt;
 &lt;h2&gt;声明&lt;/h2&gt;
 &lt;p&gt;本文是基于一篇英文文章翻译过来的。&lt;/p&gt;
 &lt;p&gt;原文链接：&lt;a class="reference external" href="http://mrjoes.github.io/2013/06/21/python-realtime.html"&gt;http://mrjoes.github.io/2013/06/21/python-realtime.html&lt;/a&gt;&lt;/p&gt;
@@ -752,44 +806,7 @@ worth to try!&lt;/p&gt;
 &lt;li&gt;静态分析&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;其实对GCC的了解本来也不是很深入,常用的就是优化于警告级别选项而已.希望以后花点时间认真看看Clang.&lt;/p&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">陶克勤</dc:creator><pubDate>Sun, 27 May 2012 00:00:00 +0200</pubDate><guid>tag:taokeqin.com,2012-05-27:about-clang.html</guid><category>clang</category></item><item><title>I'll never let go</title><link>http://taokeqin.com/ill-never-let-go.html</link><description>&lt;p&gt;昨天到影院去看了3D版的泰坦尼克。本来2D版的就已经看了很多遍了，每次看都有不同的感受，这次看3D也一样。
-3D的效果还是不错的。但是留在脑还里面的还是情节。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p class="first"&gt;物质的东西都是无情的，只有有思维才有情感。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;当坚硬的冰山，冰冷的海水逐渐吞噬泰坦尼克，逐渐吞噬生命的时候，感觉大自然真的很无情。而此时人与人之间的情感是多么的珍贵。
-当然不可避免人也是生在大自然中的，就注定了有些人也会像大自然本身一样无情于冷漠。&lt;/p&gt;
-&lt;p&gt;我们所写的代码也是很无情的，搞不好也要吞噬生命的。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;上锁的心灵需要正确的钥匙来打开&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Rose的心灵是上了锁的。而钥匙就是Jack。上锁的心灵其实是很虚假，表现出来的就是虚假的行为，虚假的语言。
-Jack改变了这一起，让Rose变得直接与真实。&lt;/p&gt;
-&lt;p&gt;用设计模式来将，没个人都会为自己准备很多装饰，动态的装饰自己的言行，装饰越多，真实的东西就隐藏的越深，自己也越累。&lt;/p&gt;
-&lt;p&gt;当Rose遇到Jack的时候去掉了所以的装饰&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;命运随时在改变，掌握主动，适时博&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;一局牌，一张船票，一个女人，一次谈话，一颗钻石， 一幅画， 一次灾难&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;真正的爱情是意识的&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;生命是自然的，所以在真正的爱情面前生命显得不是那么重要，You Jump，I Jump。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;永不放弃&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;I'll Never Let Go。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;第一次看一部这样的影院几乎满座的电影，第一次在影院的听到有人哭泣。有点特别。
-有人在笑那位哭泣的女孩，我觉得我不能笑，应为她哭的很真实，没有一点装饰。&lt;/p&gt;
-&lt;p&gt;最后，我老婆觉得要是爬在木板上的是她，她也不活了。而我会尽最大努力让她活下来。&lt;/p&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">陶克勤</dc:creator><pubDate>Sun, 15 Apr 2012 00:00:00 +0200</pubDate><guid>tag:taokeqin.com,2012-04-15:ill-never-let-go.html</guid></item><item><title>googletest和xUnit架构</title><link>http://taokeqin.com/xunit-and-googletest.html</link><description>&lt;p&gt;对于C++的测试，现在我知道两个cppunit和googletest。虽然他们都是写写xUnit构的，但是我偏向于喜欢googletest，可能是自己用得比较熟悉的原因。&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">陶克勤</dc:creator><pubDate>Sun, 27 May 2012 00:00:00 +0200</pubDate><guid>tag:taokeqin.com,2012-05-27:about-clang.html</guid><category>clang</category></item><item><title>googletest和xUnit架构</title><link>http://taokeqin.com/xunit-and-googletest.html</link><description>&lt;p&gt;对于C++的测试，现在我知道两个cppunit和googletest。虽然他们都是写写xUnit构的，但是我偏向于喜欢googletest，可能是自己用得比较熟悉的原因。&lt;/p&gt;
 &lt;div class="section" id="xunix"&gt;
 &lt;h2&gt;什么是xUnix架构&lt;/h2&gt;
 &lt;p&gt;我的一些简单理解，最先那个谁写了一个测试框架，然后大家都用，并且大家后来都觉得这种方式还不错，就这样成了惯例，然后在其他语言也有人根据这种模式写出类似的测试框架，不断的发展就成了xUnit框架，狭义的来讲x泛指各种语言。&lt;/p&gt;
@@ -928,22 +945,4 @@ If bar.o refers to functions in 'z', those functions may not be loaded.&lt;/p&gt
 &lt;/div&gt;
 &lt;p&gt;不过看起来这个说明和我遇到的实际情况刚好相反，没有继续求证，但应该就是这个问题。
 所以以后编译链接有问题 &lt;strong&gt;链接器的加载顺序&lt;/strong&gt; 需要考虑&lt;/p&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">陶克勤</dc:creator><pubDate>Mon, 02 Apr 2012 00:00:00 +0200</pubDate><guid>tag:taokeqin.com,2012-04-02:a-compile-problem-of-googlemock.html</guid><category>googlemock</category><category>g++</category></item><item><title>从愚人节开始</title><link>http://taokeqin.com/cong-yu-ren-jie-kai-shi.html</link><description>&lt;p&gt;这个我的一个独立博客，想写一个这样独立博客的计划由来已久，总是摇摆不定一会这里一会那里，最终什么也没搞出来，最近感觉这个事情再也不能等了，于是就这样开始了。&lt;/p&gt;
-&lt;p&gt;今天是愚人节，我等这个特别的日子很久了。&lt;/p&gt;
-&lt;p&gt;我希望在这里写下一些什么东西呢？&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;我在学习的技术&lt;/li&gt;
-&lt;li&gt;我工作中用到的&lt;/li&gt;
-&lt;li&gt;我感兴趣的&lt;/li&gt;
-&lt;li&gt;生活&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;就目前而言，我希望自己能花时间学习或者重温的东西：&lt;/p&gt;
-&lt;ul class="simple"&gt;
-&lt;li&gt;c++&lt;/li&gt;
-&lt;li&gt;stl boost&lt;/li&gt;
-&lt;li&gt;设计模式&lt;/li&gt;
-&lt;li&gt;离散数学&lt;/li&gt;
-&lt;li&gt;概率统计基础&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;This is a binary world,1 or 0.&lt;/p&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">陶克勤</dc:creator><pubDate>Sun, 01 Apr 2012 00:00:00 +0200</pubDate><guid>tag:taokeqin.com,2012-04-01:cong-yu-ren-jie-kai-shi.html</guid></item></channel></rss>
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">陶克勤</dc:creator><pubDate>Mon, 02 Apr 2012 00:00:00 +0200</pubDate><guid>tag:taokeqin.com,2012-04-02:a-compile-problem-of-googlemock.html</guid><category>googlemock</category><category>g++</category></item></channel></rss>
