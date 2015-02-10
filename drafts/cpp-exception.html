@@ -65,10 +65,10 @@
 我一直很喜欢下面这句话来描述我的处境，来自电影《The Pursuit Of Happyness》:</p>
 <p>I'm the type of person,if you ask me a question, and I don't know the answer,I'm gonna to tell you that I don't know.
 But I bet you what: I know how to find the answer, and I'll find the answer.</p>
-<p>最近发现些事情
-1，不用异常其实很难
-2，如果开始使用异常，工具厢里面就里面多了一个重量级利器，但可能容易伤到你的脚
-3，有些很牛逼的异常使用方法</p>
+<p>最近发现些事情</p>
+<p>1，不用异常其实很难</p>
+<p>2，如果开始使用异常，工具厢里面就里面多了一个重量级利器，但可能容易伤到你的脚</p>
+<p>3，有些很牛逼的异常使用方法</p>
 </div>
 <div class="section" id="id2">
 <h2>为什么不用异常很难？</h2>
@@ -83,18 +83,27 @@ out_of_range, length_error, bad_alloc.</p>
 </div>
 <div class="section" id="id3">
 <h2>为什么现在我觉得异常还是个利器?</h2>
-<p><a class="reference external" href="http://www.parashift.com/c++-faq-lite/exceptions.html">http://www.parashift.com/c++-faq-lite/exceptions.html</a></p>
-</div>
-<div class="section" id="id4">
-<h2>异常怎么可能伤到你的脚？</h2>
+<p>以前有个简单的想法：异常处理不就是把处理返回值的if else换成try catch么？</p>
+<p>其实不是的，我想下面的两个资料足已解决所有的问题：</p>
+<p><a class="reference external" href="http://www.parashift.com/c++-faq-lite/exceptions.html">http://www.parashift.com/c++-faq-lite/exceptions.html</a>
+Jon Kalb 的三节课程： Exception-Safe Code <a class="reference external" href="http://exceptionsafecode.com/">http://exceptionsafecode.com/</a></p>
+<p>我其实体会最深的一点就是在用c语言编程的时候，函数里面大段的都是错误情况的处理，而不是真正想要的主线逻辑。</p>
+<p>虽然约定fast return可以缓解一下，但是有的人却不认同多个return分支这样的选择。</p>
+<p>而且，这种返回值的错误完全可以不检查，恰恰有时一个没有处理到，往往就成就了一个bug。</p>
+<p>还有的情况追代码发现这个错误代码会是一层一层的往上传递，
+但是你其实无法确定中间过程有没有人处理过返回值，如果简单的认为都是透传到上层函数，shit hppens.</p>
+<p>总的来讲，程序中错误处理是很重要也很困难的。</p>
+<p>用C++的异常工具，我目前感觉还是可以让错误处理相对简单一点。</p>
 </div>
 <div class="section" id="exception-safety">
 <h2>什么是异常安全(exception safety)</h2>
+<p>异常安全简单的来讲：</p>
+<p>异常随时可能发生，安全就是希望在异常发生的时候，对象的状态不被破坏，获取的资源还能够正确管理不会泄露。</p>
 <p><a class="reference external" href="http://herbsutter.com/gotw/_102/">http://herbsutter.com/gotw/_102/</a></p>
 <p><a class="reference external" href="http://stackoverflow.com/questions/1853243/c-do-you-really-write-exception-safe-code">http://stackoverflow.com/questions/1853243/c-do-you-really-write-exception-safe-code</a>
 <a class="reference external" href="http://www.stroustrup.com/except.pdf">http://www.stroustrup.com/except.pdf</a></p>
 </div>
-<div class="section" id="id5">
+<div class="section" id="id4">
 <h2>异常处理方法</h2>
 <p><a class="reference external" href="http://open-std.org/JTC1/SC22/WG21/docs/papers/2011/n3242.pdf">http://open-std.org/JTC1/SC22/WG21/docs/papers/2011/n3242.pdf</a></p>
 </div>
