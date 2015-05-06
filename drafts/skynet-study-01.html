@@ -1,7 +1,7 @@
 ﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>Rust 网路编程 2 echo server</title>
+        <title>学习skynet 1</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Fonts -->
@@ -44,31 +44,43 @@
 <section id="content" class="body">
   <header class="post">
     <h1 class="entry-title">
-      Rust 网路编程 2 echo server
+      学习skynet 1
     </h1>
   </header>
   <footer class="post-info">
     <abbr>
-      周日 08 二月 2015 
+      周二 10 二月 2015 
          By <a class="url fn" href="http://taokeqin.github.io/author/tao-ke-qin.html">陶克勤</a>
   
     </abbr>
   </footer><!-- /.post-info -->
   <div class="entry-content">
-    <p>在第一部分里面，我感受了一下rust的基本网络编程。但什么事情都还没有做。
-这个第二部分就是来完成一个echo server.</p>
-<p>我还是依据一个rfc来：<a class="reference external" href="http://tools.ietf.org/html/rfc862">http://tools.ietf.org/html/rfc862</a>
-这里就只实现tcp部分。</p>
-<div class="highlight"><pre><span class="kn">use</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">io</span><span class="o">::*</span><span class="p">;</span><span class="w"></span>
-
-<span class="k">fn</span><span class="w"> </span><span class="n">main</span><span class="p">(){</span><span class="w"></span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">listener</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">io</span><span class="o">::</span><span class="n">TcpListener</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="s">&quot;127.0.0.1:9999&quot;</span><span class="p">).</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">acceptor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">listener</span><span class="p">.</span><span class="n">listen</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">tcpstream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">acceptor</span><span class="p">.</span><span class="n">accept</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">socketaddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tcpstream</span><span class="p">.</span><span class="n">peer_name</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;connection from: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">socketaddr</span><span class="p">);</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</pre></div>
+    <p>update: 最近来看，这个目标优先级已经很低了，估计不会做了，sad!</p>
+<p>促使我写下这个blog是今天晚上的一个意外的阅读。
+本来我就是要准备研究一下skynet: <a class="reference external" href="https://github.com/cloudwu/skynet">https://github.com/cloudwu/skynet</a> 这个游戏后端框架，
+然后一不小心读到了一个90后程序员(大学生)的博客 <a class="reference external" href="http://skynetdoc.com/">http://skynetdoc.com/</a>
+顺便加了qq聊了两句，感觉很不错。这也让我想起了以前认识的一个人xec.</p>
+<p>还是非常感慨现在很多小伙子在程序设计，软件工程方面的能力。</p>
+<p>我觉得我该下决心做这件事情了。</p>
+<div class="section" id="skynet">
+<h2>我为什么想学习一下skynet</h2>
+<p>很早以前看cloudwu的博客，发现的这个skynet，后面试玩了一下他们的游戏天天来战感觉还可以</p>
+<p>而我自己一直在通信行业里面混，算是想看看外面的世界，skynet是看到在游戏领域社区很不错的一个国内开源项目。
+实在搞不动的时候，除了作者可以讨论，还有广大的程序员们。比如skynetdoc的作者</p>
+<p>也想看看游戏服务到底可能是什么样子的</p>
+</div>
+<div class="section" id="id1">
+<h2>我的目标</h2>
+<ol class="arabic simple">
+<li>写blog记录学习过程（计划5+篇blog）</li>
+<li>总得发现点问题，有可能不痛不痒，但提出我的意见，最好做个github PR（计划1+个问题）</li>
+<li>尝试利用这个框架写一个简单的游戏后端。（可选）</li>
+<li>尝试重复造一个轮子（可选）</li>
+</ol>
+<p>这个目标对我来说不是很大，但是今年计划的事情比较多，战线有点长，完成的deadline是：2015.12.31</p>
+<p>其实有可能这个框架别人已经分析得很透彻了，也有其他很多的博客来进行介绍，不过那都是别人的。
+我可能会借鉴学习，但肯定不会完全抄袭。</p>
+</div>
 
   </div><!-- /.entry-content -->
 <div id="disqus_thread"></div>

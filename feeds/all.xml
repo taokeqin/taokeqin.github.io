@@ -1,30 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>陶克勤的博客</title><link>http://taokeqin.github.io/</link><description>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</description><atom:link href="taokeqin.com/feeds/all.xml" rel="self"></atom:link><lastBuildDate>Tue, 10 Feb 2015 00:00:00 +0100</lastBuildDate><item><title>学习skynet 1</title><link>http://taokeqin.github.io/skynet-study-01.html</link><description>&lt;p&gt;促使我写下这个blog是今天晚上的一个意外的阅读。
-本来我就是要准备研究一下skynet: &lt;a class="reference external" href="https://github.com/cloudwu/skynet"&gt;https://github.com/cloudwu/skynet&lt;/a&gt; 这个游戏后端框架，
-然后一不小心读到了一个90后程序员(大学生)的博客 &lt;a class="reference external" href="http://skynetdoc.com/"&gt;http://skynetdoc.com/&lt;/a&gt;
-顺便加了qq聊了两句，感觉很不错。这也让我想起了以前认识的一个人xec.&lt;/p&gt;
-&lt;p&gt;还是非常感慨现在很多小伙子在程序设计，软件工程方面的能力。&lt;/p&gt;
-&lt;p&gt;我觉得我该下决心做这件事情了。&lt;/p&gt;
-&lt;div class="section" id="skynet"&gt;
-&lt;h2&gt;我为什么想学习一下skynet&lt;/h2&gt;
-&lt;p&gt;很早以前看cloudwu的博客，发现的这个skynet，后面试玩了一下他们的游戏天天来战感觉还可以&lt;/p&gt;
-&lt;p&gt;而我自己一直在通信行业里面混，算是想看看外面的世界，skynet是看到在游戏领域社区很不错的一个国内开源项目。
-实在搞不动的时候，除了作者可以讨论，还有广大的程序员们。比如skynetdoc的作者&lt;/p&gt;
-&lt;p&gt;也想看看游戏服务到底可能是什么样子的&lt;/p&gt;
-&lt;/div&gt;
-&lt;div class="section" id="id1"&gt;
-&lt;h2&gt;我的目标&lt;/h2&gt;
-&lt;ol class="arabic simple"&gt;
-&lt;li&gt;写blog记录学习过程（计划5+篇blog）&lt;/li&gt;
-&lt;li&gt;总得发现点问题，有可能不痛不痒，但提出我的意见，最好做个github PR（计划1+个问题）&lt;/li&gt;
-&lt;li&gt;尝试利用这个框架写一个简单的游戏后端。（可选）&lt;/li&gt;
-&lt;li&gt;尝试重复造一个轮子（可选）&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;这个目标对我来说不是很大，但是今年计划的事情比较多，战线有点长，完成的deadline是：2015.12.31&lt;/p&gt;
-&lt;p&gt;其实有可能这个框架别人已经分析得很透彻了，也有其他很多的博客来进行介绍，不过那都是别人的。
-我可能会借鉴学习，但肯定不会完全抄袭。&lt;/p&gt;
-&lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">陶克勤</dc:creator><pubDate>Tue, 10 Feb 2015 00:00:00 +0100</pubDate><guid>tag:taokeqin.github.io,2015-02-10:skynet-study-01.html</guid><category>skynet</category></item><item><title>Rust 网路编程 1</title><link>http://taokeqin.github.io/rust-network-one.html</link><description>&lt;div class="section" id="start"&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>陶克勤的博客</title><link>http://taokeqin.github.io/</link><description>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</description><atom:link href="taokeqin.com/feeds/all.xml" rel="self"></atom:link><lastBuildDate>Wed, 06 May 2015 00:00:00 +0200</lastBuildDate><item><title>Rust 网路编程 2 echo server</title><link>http://taokeqin.github.io/rust-network-echo-server.html</link><description>&lt;p&gt;这次尝试离之前又过去了三个月了，rust已经进入了beta了：&lt;/p&gt;
+&lt;p&gt;rustc 1.0.0-beta.4 (850151a75 2015-04-30) (built 2015-05-01)&lt;/p&gt;
+&lt;p&gt;不光是网路部分，整个rust较之前都有了不小的变化。&lt;/p&gt;
+&lt;p&gt;在第一部分里面（代码在最新的rust是肯定不能用的了），我感受了一下rust的基本网络编程。但什么事情都还没有做。
+这个第二部分就是来完成一个echo server.&lt;/p&gt;
+&lt;p&gt;我还是依据一个rfc来：&lt;a class="reference external" href="http://tools.ietf.org/html/rfc862"&gt;http://tools.ietf.org/html/rfc862&lt;/a&gt;
+这里就只实现tcp部分。
+直接贴代码了，算是个笔记&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;use&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;net&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;TcpListener&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;TcpStream&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="kn"&gt;use&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;thread&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="kn"&gt;use&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Read&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Write&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="c1"&gt;// 单个连接的处理函数&lt;/span&gt;
+&lt;span class="k"&gt;fn&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;handle_client&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;mut&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;TcpStream&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;peer_addr&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;peer_addr&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;unwrap&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nb"&gt;println&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;connected from: {} &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;peer_addr&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;mut&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;loop&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;len&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="k"&gt;mut&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;unwrap&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;len&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="nb"&gt;println&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Peer shutdown!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{} say: &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;peer_addr&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;len&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;char&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="c1"&gt;// echo to client&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;_&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;len&lt;/span&gt;&lt;span class="p"&gt;]).&lt;/span&gt;&lt;span class="n"&gt;unwrap&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="k"&gt;fn&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="c1"&gt;//RFC 说echo server要运行在端口7，这里就运行在7777吧，万恶的unwrap!&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;listener&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;TcpListener&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;bind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;127.0.0.1:7777&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;unwrap&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;listener&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;incoming&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="k"&gt;match&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="nb"&gt;Ok&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="c1"&gt;//这里对每一个accept的链接，启动一个线程来处理&lt;/span&gt;
+&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="c1"&gt;//线程函数是个colsure,不带参数&lt;/span&gt;
+&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="c1"&gt;//捕获上下文里面的stream变量，强制move&lt;/span&gt;
+&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="n"&gt;thread&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="nb"&gt;spawn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;move&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;||&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                    &lt;/span&gt;&lt;span class="n"&gt;handle_client&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="p"&gt;});&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="nb"&gt;Err&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="nb"&gt;println&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Fucked by the network problem: {} &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;很多错误没有处理，都直接unwrap了。&lt;/p&gt;
+&lt;p&gt;下一个试试写一个聊天室程序吧。用一个非常简单需求：&lt;/p&gt;
+&lt;p&gt;1，服务器启动&lt;/p&gt;
+&lt;p&gt;2，客户端连接，发送消息到服务器&lt;/p&gt;
+&lt;p&gt;3，服务器广播消息到所有连接的客户端&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">陶克勤</dc:creator><pubDate>Wed, 06 May 2015 00:00:00 +0200</pubDate><guid>tag:taokeqin.github.io,2015-05-06:rust-network-echo-server.html</guid><category>rust</category><category>netwrok</category></item><item><title>Rust 网路编程 1</title><link>http://taokeqin.github.io/rust-network-one.html</link><description>&lt;div class="section" id="start"&gt;
 &lt;h2&gt;Start&lt;/h2&gt;
 &lt;p&gt;虽然现在rust的网络部分还很初级，基本都处在unstable状态。
 不过简单的试试网络编程还是没问题。&lt;/p&gt;
@@ -120,21 +154,7 @@ accept
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;最后，我没有任何关闭socket的操作是不是有问题？&lt;/p&gt;
 &lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">陶克勤</dc:creator><pubDate>Sun, 08 Feb 2015 00:00:00 +0100</pubDate><guid>tag:taokeqin.github.io,2015-02-08:rust-network-one.html</guid><category>rust</category><category>netwrok</category></item><item><title>Rust 网路编程 2 echo server</title><link>http://taokeqin.github.io/rust-network-two.html</link><description>&lt;p&gt;在第一部分里面，我感受了一下rust的基本网络编程。但什么事情都还没有做。
-这个第二部分就是来完成一个echo server.&lt;/p&gt;
-&lt;p&gt;我还是依据一个rfc来：&lt;a class="reference external" href="http://tools.ietf.org/html/rfc862"&gt;http://tools.ietf.org/html/rfc862&lt;/a&gt;
-这里就只实现tcp部分。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;use&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="o"&gt;::*&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-
-&lt;span class="k"&gt;fn&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;listener&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;TcpListener&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;bind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;127.0.0.1:9999&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="n"&gt;unwrap&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;mut&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;acceptor&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;listener&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;listen&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;unwrap&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;mut&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tcpstream&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;acceptor&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;accept&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;unwrap&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;socketaddr&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tcpstream&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;peer_name&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;unwrap&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nb"&gt;println&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;connection from: {}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;socketaddr&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">陶克勤</dc:creator><pubDate>Sun, 08 Feb 2015 00:00:00 +0100</pubDate><guid>tag:taokeqin.github.io,2015-02-08:rust-network-two.html</guid><category>rust</category><category>netwrok</category></item><item><title>rust hello world</title><link>http://taokeqin.github.io/rust-hello.html</link><description>&lt;div class="section" id="hi"&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">陶克勤</dc:creator><pubDate>Sun, 08 Feb 2015 00:00:00 +0100</pubDate><guid>tag:taokeqin.github.io,2015-02-08:rust-network-one.html</guid><category>rust</category><category>netwrok</category></item><item><title>rust hello world</title><link>http://taokeqin.github.io/rust-hello.html</link><description>&lt;div class="section" id="hi"&gt;
 &lt;h2&gt;HI&lt;/h2&gt;
 &lt;p&gt;第一次看到rust这个语言是在一个Lang.Next的视频上，当时有一个对话场景，上面坐着4个人再回答下面的提问！&lt;/p&gt;
 &lt;p&gt;这四个人所负责的语言分别是：C++, D, rust, go&lt;/p&gt;
