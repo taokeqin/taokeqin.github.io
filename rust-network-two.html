@@ -1,7 +1,7 @@
 ﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>c++0x_lambda</title>
+        <title>Rust 网路编程 2 echo server</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Fonts -->
@@ -44,51 +44,31 @@
 <section id="content" class="body">
   <header class="post">
     <h1 class="entry-title">
-      c++0x_lambda
+      Rust 网路编程 2 echo server
     </h1>
   </header>
   <footer class="post-info">
     <abbr>
-      周三 30 五月 2012 
+      周日 08 二月 2015 
          By <a class="url fn" href="http://taokeqin.github.io/author/tao-ke-qin.html">陶克勤</a>
   
     </abbr>
   </footer><!-- /.post-info -->
   <div class="entry-content">
-    <p>看了一下,这些关于lambda的讨论,貌似都是在09年左右,不过我感觉还是很有价值的.</p>
-<p>权威文档的话参考SPEC <a class="footnote-reference" href="#id5" id="id1">[1]</a></p>
-<p>从SPEC来看,lambda的语法上还是很多细节需要注意的,但是要想掌握其用法应该稍加练习就可以了.</p>
-<p>第二个网页 <a class="footnote-reference" href="#id6" id="id2">[2]</a> 讲一些vc10对lambda的支持,从这篇文章基本上可以看到lambda在使用上的全貌.</p>
-<p>第三个页面 <a class="footnote-reference" href="#id7" id="id3">[3]</a> 我比较喜欢,stackoverflow你懂的.</p>
-<p>其实boost中已经有lambda的实现了,之前有练习过用法,没有太深入.
-如果我没有记错的话boost::lambda使用上更加简洁,但限制比较多,但是功能没有std::lambda强大.
-需要看看各个编译器对std::lambda的支持程度了,如果这个程度到了一个比较好的阶段,估计很多人都只会用std的了.</p>
-<p>看看网页 <a class="footnote-reference" href="#id8" id="id4">[4]</a> ,当我们有了auto, lambda再加上我们牛X的stl,代码写起来有木有感觉想在写脚本?
-worth to try!</p>
-<table class="docutils footnote" frame="void" id="id5" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>SPEC: <a class="reference external" href="http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2009/n2927.pdf">http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2009/n2927.pdf</a></td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id6" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>easy sample: <a class="reference external" href="http://blogs.msdn.com/b/vcblog/archive/2008/10/28/lambdas-auto-and-static-assert-c-0x-features-in-vc10-part-1.aspx">http://blogs.msdn.com/b/vcblog/archive/2008/10/28/lambdas-auto-and-static-assert-c-0x-features-in-vc10-part-1.aspx</a></td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id7" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>discuss: <a class="reference external" href="http://stackoverflow.com/questions/1203808/c0x-lambdas-coding-style">http://stackoverflow.com/questions/1203808/c0x-lambdas-coding-style</a></td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id8" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>practice lambda: <a class="reference external" href="http://www.gamedev.net/blog/32/entry-2254311-the-new-c-lambdas/">http://www.gamedev.net/blog/32/entry-2254311-the-new-c-lambdas/</a></td></tr>
-</tbody>
-</table>
+    <p>在第一部分里面，我感受了一下rust的基本网络编程。但什么事情都还没有做。
+这个第二部分就是来完成一个echo server.</p>
+<p>我还是依据一个rfc来：<a class="reference external" href="http://tools.ietf.org/html/rfc862">http://tools.ietf.org/html/rfc862</a>
+这里就只实现tcp部分。</p>
+<div class="highlight"><pre><span class="kn">use</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">io</span><span class="o">::*</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">main</span><span class="p">(){</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">listener</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">io</span><span class="o">::</span><span class="n">TcpListener</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="s">&quot;127.0.0.1:9999&quot;</span><span class="p">).</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">acceptor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">listener</span><span class="p">.</span><span class="n">listen</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">tcpstream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">acceptor</span><span class="p">.</span><span class="n">accept</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">socketaddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tcpstream</span><span class="p">.</span><span class="n">peer_name</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;connection from: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">socketaddr</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
 
   </div><!-- /.entry-content -->
 <div id="disqus_thread"></div>
