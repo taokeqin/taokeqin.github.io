@@ -1,0 +1,197 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>rust 网路编程 3 chat server</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://taokeqin.github.io/theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="http://taokeqin.github.io/theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="http://taokeqin.github.io/theme/css/font-awesome.css" type="text/css" />
+
+        <!-- Javascript-->
+        <script src="http://taokeqin.github.io/theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li class="current"><a href="http://taokeqin.github.io">博客</a> </li>
+          <li><a href="http://taokeqin.github.io/archives.html">归档</a></li>
+          <li><a href="http://taokeqin.github.io/categories.html">分类</a> </li>
+          <li><a href="feeds/all.xml">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href="http://taokeqin.github.io">陶克勤的博客 <strong>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+            <li><a href="http://taokeqin.github.io/pages/about-taokeqin.html">关于我</a></li>
+            <li><a href="http://taokeqin.github.io/pages/toolbox.html">工具箱</a></li>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+<section id="content" class="body">
+  <header class="post">
+    <h1 class="entry-title">
+      rust 网路编程 3 chat server
+    </h1>
+  </header>
+  <footer class="post-info">
+    <abbr>
+      周四 07 五月 2015 
+         By <a class="url fn" href="http://taokeqin.github.io/author/tao-ke-qin.html">陶克勤</a>
+  
+    </abbr>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>基于：rustc 1.0.0-beta.4 (850151a75 2015-04-30) (built 2015-05-01)</p>
+<p>这个例子没有任何设计元素在里面，就是一个简单的概念验证。
+写这个程序还是发现对rust的理解还非常浅啊。</p>
+<p>有个奇特的结论：</p>
+<p>rust代码写起来累，和rustc搏斗，但是回顾起来觉得很自然。
+比如为什么要Arc，为什么需要mut，为什么又不需要mut</p>
+<p>另外一个新感觉rust api不太好查，左边没有索引，有些解决方案还不如直接google问题来的快，
+比如下面代码里面的从vec里面删除一个元素</p>
+<p>后面要改进一下unwrap的使用，总是unwrap满天飞。。。，
+突然有点怀念exception了，怎么办？</p>
+<p>rust里面推荐的线程间数据传递的两种方法：</p>
+<p>1，共享状态，Arc + Mutex</p>
+<p>2，channel</p>
+<p>本来是想试一试channel的，就写下面的代码写累了，就暂时放下了，后面再看有时间重构不，比如起个线程推送消息</p>
+<p>贴个代码，自己记录一下：</p>
+<div class="highlight"><pre><span class="kn">use</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">net</span><span class="o">::</span><span class="p">{</span><span class="n">TcpListener</span><span class="p">,</span><span class="w"> </span><span class="n">TcpStream</span><span class="p">};</span><span class="w"></span>
+<span class="kn">use</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">thread</span><span class="p">;</span><span class="w"></span>
+<span class="kn">use</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="p">{</span><span class="n">Read</span><span class="p">,</span><span class="w"> </span><span class="n">Write</span><span class="p">};</span><span class="w"></span>
+<span class="kn">use</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">sync</span><span class="o">::</span><span class="p">{</span><span class="n">Arc</span><span class="p">,</span><span class="w"> </span><span class="n">Mutex</span><span class="p">};</span><span class="w"></span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">handle_client</span><span class="p">(</span><span class="k">mut</span><span class="w"> </span><span class="n">tcp_stream</span><span class="o">:</span><span class="w"> </span><span class="n">TcpStream</span><span class="p">,</span><span class="w"> </span><span class="n">clients</span><span class="o">:</span><span class="w"> </span><span class="n">Arc</span><span class="o">&lt;</span><span class="w"> </span><span class="n">Mutex</span><span class="o">&lt;</span><span class="w"> </span><span class="n">Vec</span><span class="o">&lt;</span><span class="n">TcpStream</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">&gt;</span><span class="p">){</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">peer_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tcp_stream</span><span class="p">.</span><span class="n">peer_addr</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;{} online!&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">peer_addr</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//通知其他客户端上线了</span>
+<span class="w">    </span><span class="c1">//用了一个scope，也可以在这个scope的结尾直接drop这个MutexGuard来解锁mutex</span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">//lock出来一个可变的Vec，下面要push进去当前这个client</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">other_clients</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clients</span><span class="p">.</span><span class="n">lock</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">each_client</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">other_clients</span><span class="p">.</span><span class="n">iter</span><span class="p">(){</span><span class="w"></span>
+<span class="w">                </span><span class="n">each_client</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="w"></span>
+<span class="w">                        </span><span class="n">format</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;{} is online!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">peer_addr</span><span class="p">).</span><span class="n">as_bytes</span><span class="p">())</span><span class="w"></span>
+<span class="w">                    </span><span class="p">.</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">other_clients</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">tcp_stream</span><span class="p">.</span><span class="n">try_clone</span><span class="p">().</span><span class="n">unwrap</span><span class="p">());</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// 预分配一个u8数组来存储client发来的消息</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="mi">1024</span><span class="p">];</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// 开始循环处理当前客户端的数据</span>
+<span class="w">    </span><span class="k">loop</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">message_length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tcp_stream</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">message</span><span class="p">).</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">message_length</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;{} offline!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">peer_addr</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="nb">print</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;{} say: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">peer_addr</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">0.</span><span class="p">.</span><span class="n">message_length</span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nb">print</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;{}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">char</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// 把从当前客户端读取的数据推送到所有其他的客户端</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">all_clients</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clients</span><span class="p">.</span><span class="n">lock</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">each_client</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">all_clients</span><span class="p">.</span><span class="n">iter</span><span class="p">(){</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">each_client</span><span class="p">.</span><span class="n">peer_addr</span><span class="p">().</span><span class="n">unwrap</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">tcp_stream</span><span class="p">.</span><span class="n">peer_addr</span><span class="p">().</span><span class="n">unwrap</span><span class="p">(){</span><span class="w"></span>
+<span class="w">                </span><span class="n">each_client</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="w"></span>
+<span class="w">                        </span><span class="n">format</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">{} say:</span><span class="se">\n\n</span><span class="s">    &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">peer_addr</span><span class="p">).</span><span class="n">as_bytes</span><span class="p">())</span><span class="w"></span>
+<span class="w">                    </span><span class="p">.</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">                </span><span class="n">each_client</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="o">&amp;</span><span class="n">message</span><span class="p">[</span><span class="mf">0.</span><span class="p">.</span><span class="n">message_length</span><span class="p">]).</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">//loop跳出来到这里应该是当前这个连接已经断了，</span>
+<span class="w">    </span><span class="c1">//从连接列表里面去掉它，</span>
+<span class="w">    </span><span class="c1">//并且通知其他客户端下线了</span>
+
+<span class="w">    </span><span class="c1">//这里allclients要mut，因为下面有remove操作</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">all_clients</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clients</span><span class="p">.</span><span class="n">lock</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//下面这个实际上是个find操作，感觉vec的查找很弱啊，还得借助iter，不太像c++的stl</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">all_clients</span><span class="p">.</span><span class="n">iter</span><span class="p">().</span><span class="n">position</span><span class="p">(</span><span class="o">|</span><span class="n">c</span><span class="o">|</span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="n">peer_addr</span><span class="p">().</span><span class="n">unwrap</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">peer_addr</span><span class="w"></span>
+<span class="w">        </span><span class="p">}).</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">all_clients</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">index</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">each_client</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">all_clients</span><span class="p">.</span><span class="n">iter</span><span class="p">(){</span><span class="w"></span>
+<span class="w">            </span><span class="n">each_client</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">format</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;{} is offline!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">peer_addr</span><span class="p">).</span><span class="n">as_bytes</span><span class="p">()).</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">fn</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">listener</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TcpListener</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="s">&quot;127.0.0.1:7777&quot;</span><span class="p">).</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//在这里定义一个全局的连接数组，方便在各个线程里面共享。</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">clients</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Arc</span><span class="o">::</span><span class="n">new</span><span class="p">(</span><span class="n">Mutex</span><span class="o">::</span><span class="n">new</span><span class="p">(</span><span class="n">Vec</span><span class="o">::</span><span class="n">new</span><span class="p">()));</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">tcp_stream</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">listener</span><span class="p">.</span><span class="n">incoming</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">clients</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clients</span><span class="p">.</span><span class="n">clone</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="k">match</span><span class="w"> </span><span class="n">tcp_stream</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nb">Ok</span><span class="p">(</span><span class="n">tcp_stream</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="n">thread</span><span class="o">::</span><span class="nb">spawn</span><span class="p">(</span><span class="n">move</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                    </span><span class="n">handle_client</span><span class="p">(</span><span class="n">tcp_stream</span><span class="p">,</span><span class="w"> </span><span class="n">clients</span><span class="p">);</span><span class="w"></span>
+<span class="w">                </span><span class="p">});</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">            </span><span class="nb">Err</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;Fucked by the network problem: {} &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+  </div><!-- /.entry-content -->
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'taokeqin'; 
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href="http://taokeqin.github.io">陶克勤</a> (2012-2015)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', "UA-32182203-1"]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>
