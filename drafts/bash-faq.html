@@ -1,7 +1,7 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>陶克勤的博客</title>
+        <title>bash faq</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Fonts -->
@@ -27,10 +27,10 @@
 <body id="index" class="home">
      <div class="navigation">
         <ol class="nav">
-          <li><a href="https://taokeqin.github.io">Blog</a> </li>
-          <li><a href="https://taokeqin.github.io/archives.html">Archive</a></li>
-          <li class="current"><a href="https://taokeqin.github.io/categories.html">Categories</a> </li>
-          <li><a href="https://taokeqin.github.io/">RSS</a> </li>
+          <li class="current"><a href="https://taokeqin.github.io">博客</a> </li>
+          <li><a href="https://taokeqin.github.io/archives.html">归档</a></li>
+          <li><a href="https://taokeqin.github.io/categories.html">分类</a> </li>
+          <li><a href="feeds/all.xml">RSS</a> </li>
         </ol>
       </div>
         <header id="banner" class="body">
@@ -41,10 +41,55 @@
             <li><a href="https://taokeqin.github.io/pages/toolbox.html">工具箱</a></li>
         </ul></nav><!-- /#menu -->
         <div class="box">
-<ul>
-    <li><a href="https://taokeqin.github.io/category/rust.html">rust</a></li>
-    <li><a href="https://taokeqin.github.io/category/tech.html">tech</a></li>
-</ul>
+<section id="content" class="body">
+  <header class="post">
+    <h1 class="entry-title">
+      bash faq
+    </h1>
+  </header>
+  <footer class="post-info">
+    <abbr>
+      Tue 08 September 2015 
+         By <a class="url fn" href="https://taokeqin.github.io/author/tao-ke-qin.html">陶克勤</a>
+  
+    </abbr>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>这个faq基于bash，其他的shell需要再google了</p>
+<p>Q：shell里面怎么获取命令行参数？</p>
+<p>Q: sehll里面怎么定义函数？</p>
+<p>Q：shell里面怎么使用命令行参数或者函数参数？</p>
+<p>Q：shell的函数怎么返回值？</p>
+<p>Q：shell里面的exit？</p>
+<dl class="docutils">
+<dt>Q: shell代码怎么复用？</dt>
+<dd><p class="first">把需要复用的代码放到一个单独的shell文件里面，在需要调用的shell文件里面通过使用source命令进行导入。</p>
+<blockquote class="last">
+<div class="highlight"><pre><span class="n">source</span> <span class="n">util</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</blockquote>
+</dd>
+</dl>
+<p>Q：shell代码怎么做单元测试？</p>
+<p>Q：shell里面怎么mock?</p>
+<p>Q: shell里面数组是怎么用的？</p>
+<p>Q: shell里面怎么使用正则表达式？</p>
+<p>Q：shell里面怎么判断字符串包含？</p>
+<p>Q：shell里面的条件表达式怎么用？</p>
+
+  </div><!-- /.entry-content -->
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'taokeqin'; 
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
             <hr/>
             <footer id="contentinfo" class="footer">
                 <div>
