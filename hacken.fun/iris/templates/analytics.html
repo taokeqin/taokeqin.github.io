@@ -35,3 +35,8 @@
   })(window);
 </script>
 {% endif %}
+
+{% if LA_CODE %}
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "{{LA_CODE}}",ck: "{{LA_CODE}}"})</script>
+{% endif %}
