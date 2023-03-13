@@ -46,7 +46,7 @@ pageextension 50000 "My Sales Order" extends "Sales Order"
 ```
 
 ```AL
-pageextension 50001 "EGI Sales Order Subform" extends "Sales Order Subform"
+pageextension 50001 "My Sales Order Subform" extends "Sales Order Subform"
 {
     layout
     {
@@ -54,6 +54,8 @@ pageextension 50001 "EGI Sales Order Subform" extends "Sales Order Subform"
         {
             trigger OnAfterValidate()
             begin
+                // 下面这一行很重要，Get一下以获取最新的变更，否则保存的时候可能因为etag已经不是最新的了而保存失败
+                ParentSalesHeaderRecord.Get(ParentSalesHeaderRecord."Document Type", ParentSalesHeaderRecord."No.");
                 ParentSalesHeaderRecord."Location Code" := "MyLocation"//在这里改变上级页面的数据
                 ParentSalesHeaderRecord.Modify();//保存变更到数据库
                 CurrPage.Update();//触发更新
