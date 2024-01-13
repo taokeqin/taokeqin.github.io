@@ -18,7 +18,7 @@ Summary: 介绍常用的主页面和子页面的通信方式
 
 注意在 Sales Order 页面的定义中有个 part，名字是：SalesLines，下面代码节选自: page 42 "Sales Order"
 
-```AL
+```cs
 part(SalesLines; "Sales Order Subform")
 {
     ApplicationArea = Basic, Suite;
@@ -29,7 +29,7 @@ part(SalesLines; "Sales Order Subform")
 }
 ```
 
-```AL
+```cs
 pageextension 50000 "My Sales Order" extends "Sales Order"
 {
     trigger OnOpenPage()
@@ -45,7 +45,7 @@ pageextension 50000 "My Sales Order" extends "Sales Order"
 }
 ```
 
-```AL
+```cs
 pageextension 50001 "My Sales Order Subform" extends "Sales Order Subform"
 {
     layout
@@ -83,3 +83,29 @@ pageextension 50001 "My Sales Order Subform" extends "Sales Order Subform"
 
 1. 向下通过 page 的方法调用传递数据，当然也可以传递主页面的 Rec 数据。
 2. 保存主页面的 Rec 到 part，通过改变 Rec 的值，保存数据库，更新页面
+
+在子页面如何获取主页面调用是传的参数呢？
+
+可以通过如下函数测试看看在子页面中都获取到了哪些过滤器。
+
+利用 Record.FilterGroup([Integer]) Method
+https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/record/record-filtergroup-method
+
+```cs
+trigger OnOpenPage()
+begin
+    Rec.FilterGroup(0);
+    Message('OnOpenPage group 0 filter: %1', Rec.GetFilters());
+    Rec.FilterGroup(1);
+    Message('OnOpenPage group 1 filter: %1', Rec.GetFilters());
+    Rec.FilterGroup(2);
+    Message('OnOpenPage group 2 filter: %1', Rec.GetFilters());
+    Rec.FilterGroup(3);
+    Message('OnOpenPage group 3 filter: %1', Rec.GetFilters());
+    Rec.FilterGroup(4);
+    Message('OnOpenPage group 4 filter: %1', Rec.GetFilters());
+    Rec.FilterGroup(0);//这里再把filter group设置回0
+end;
+```
+
+一般如果只是希望查看 filter 的值，用完之后最好把 filter group 设置到之前使用的那个，默认是 0，否则后续的 filter 都会加到这个 group 中。
