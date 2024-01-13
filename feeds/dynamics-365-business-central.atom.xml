@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Tao听途说 - dynamics-365-business-central</title><link href="https://hacken.fun/" rel="alternate"></link><link href="https://hacken.fun/feeds/dynamics-365-business-central.atom.xml" rel="self"></link><id>https://hacken.fun/</id><updated>2023-03-07T23:00:00+01:00</updated><subtitle>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</subtitle><subtitle>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</subtitle><entry><title>主页面和子页面的通信</title><link href="https://hacken.fun/communication-between-main-page-and-sub-part.html" rel="alternate"></link><published>2023-03-07T23:00:00+01:00</published><updated>2023-03-07T23:00:00+01:00</updated><author><name>Hacken</name></author><id>tag:hacken.fun,2023-03-07:/communication-between-main-page-and-sub-part.html</id><summary type="html">&lt;p&gt;介绍常用的主页面和子页面的通信方式&lt;/p&gt;</summary><content type="html">&lt;p&gt;这里讨论的 main 页面和子页面不是关于继承关系的两个页面，即不是用 extends 扩展的页面之间的通信，而是类似在 Sales Order 页面 Header 和 Sales Order Line 之间的通信。&lt;/p&gt;
+&lt;p&gt;简单来说要说明的就是&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Header 发生了变化，怎么通知 Sales Order Line 页面。&lt;/li&gt;
+&lt;li&gt;Sales Order Line 页面发生了变化，怎么通知 Header 页面。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;用下面这个例子来展示一种可能的通信方式，具体内容参见注释&lt;/p&gt;
+&lt;p&gt;注意在 Sales Order 页面的定义中有个 part，名字是：SalesLines，下面代码节选自: page 42 "Sales Order"&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;part(SalesLines; &amp;quot;Sales Order Subform&amp;quot;)
+{
+    ApplicationArea = Basic, Suite;
+    Editable = IsSalesLinesEditable;
+    Enabled = IsSalesLinesEditable;
+    SubPageLink = &amp;quot;Document No.&amp;quot; = FIELD(&amp;quot;No.&amp;quot;);
+    UpdatePropagation = Both; //这个属性很关键
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;pageextension&lt;/span&gt; &lt;span class="mi"&gt;50000&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;My Sales Order&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Sales Order&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;trigger&lt;/span&gt; &lt;span class="n"&gt;OnOpenPage&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;begin&lt;/span&gt;
+        &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;这里可以通过访问&lt;/span&gt;&lt;span class="n"&gt;CurrPage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;
+        &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;xxx表示field&lt;/span&gt;
+        &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;这里通过&lt;/span&gt;&lt;span class="n"&gt;SalesLines获取到这个part&lt;/span&gt;
+        &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;通过&lt;/span&gt;&lt;span class="n"&gt;CurrPage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SalesLines&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Page获取这个子页面对象&lt;/span&gt;
+        &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;CurrPage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SalesLines&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Page&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SetParentRec调用SalesLines页面的一个公共函数&lt;/span&gt;&lt;span class="err"&gt;。&lt;/span&gt;
+        &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;这样通过调用子页面的方法来进行向下数据传递&lt;/span&gt;
+        &lt;span class="n"&gt;CurrPage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SalesLines&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Page&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SetParentRec&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Rec&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;pageextension&lt;/span&gt; &lt;span class="mi"&gt;50001&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;My Sales Order Subform&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Sales Order Subform&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;layout&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;modify&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;No.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;trigger&lt;/span&gt; &lt;span class="n"&gt;OnAfterValidate&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+            &lt;span class="n"&gt;begin&lt;/span&gt;
+                &lt;span class="o"&gt;//&lt;/span&gt; &lt;span class="err"&gt;下面这一行很重要，&lt;/span&gt;&lt;span class="n"&gt;Get一下以获取最新的变更&lt;/span&gt;&lt;span class="err"&gt;，否则保存的时候可能因为&lt;/span&gt;&lt;span class="n"&gt;etag已经不是最新的了而保存失败&lt;/span&gt;
+                &lt;span class="n"&gt;ParentSalesHeaderRecord&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ParentSalesHeaderRecord&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Document Type&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ParentSalesHeaderRecord&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;No.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                &lt;span class="n"&gt;ParentSalesHeaderRecord&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Location Code&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;MyLocation&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;在这里改变上级页面的数据&lt;/span&gt;
+                &lt;span class="n"&gt;ParentSalesHeaderRecord&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Modify&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;保存变更到数据库&lt;/span&gt;
+                &lt;span class="n"&gt;CurrPage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Update&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;触发更新&lt;/span&gt;
+                &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;奇怪的是如果注释掉上面这一行功能也正常，这和&lt;/span&gt;&lt;span class="n"&gt;UpdatePropagation属性描述的有一些出入&lt;/span&gt;&lt;span class="err"&gt;。&lt;/span&gt;
+            &lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;这个函数用&lt;/span&gt;&lt;span class="n"&gt;procedure定义&lt;/span&gt;&lt;span class="err"&gt;，表示公共方法&lt;/span&gt;
+    &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;参数是一个&lt;/span&gt;&lt;span class="n"&gt;Sales&lt;/span&gt; &lt;span class="n"&gt;Header的引用&lt;/span&gt;
+    &lt;span class="n"&gt;procedure&lt;/span&gt; &lt;span class="n"&gt;SetParentRec&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt; &lt;span class="n"&gt;PSalesHeaderRecord&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Record&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Sales Header&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;begin&lt;/span&gt;
+        &lt;span class="n"&gt;ParentSalesHeaderRecord&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;PSalesHeaderRecord&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;这里会产生一个&lt;/span&gt;&lt;span class="n"&gt;copy&lt;/span&gt;&lt;span class="err"&gt;，所以在子页面中就得到了一个上级页面的数据&lt;/span&gt;
+        &lt;span class="n"&gt;ParentSalesHeaderRecord&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Location Code&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;MyLocation&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="o"&gt;//&lt;/span&gt; &lt;span class="err"&gt;注意，这一行不会改变主页面的&lt;/span&gt;&lt;span class="n"&gt;Rec&lt;/span&gt;
+        &lt;span class="n"&gt;PSalesHeaderRecord&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Location Code&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;MyLocation&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="o"&gt;//&lt;/span&gt; &lt;span class="err"&gt;注意，这一行同样不会改变主页面的&lt;/span&gt;&lt;span class="n"&gt;Rec&lt;/span&gt;
+        &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;虽然&lt;/span&gt;&lt;span class="n"&gt;PSalesHeaderRecord是引用出入&lt;/span&gt;&lt;span class="err"&gt;，但却不是引用的行为，很奇怪，目前还没弄清楚为什么是这样！&lt;/span&gt;
+    &lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;var&lt;/span&gt;
+        &lt;span class="n"&gt;ParentSalesHeaderRecord&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Record&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Sales Header&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;所以简单来讲：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;向下通过 page 的方法调用传递数据，当然也可以传递主页面的 Rec 数据。&lt;/li&gt;
+&lt;li&gt;保存主页面的 Rec 到 part，通过改变 Rec 的值，保存数据库，更新页面&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在子页面如何获取主页面调用是传的参数呢？&lt;/p&gt;
+&lt;p&gt;可以通过如下函数测试看看在子页面中都获取到了哪些过滤器。&lt;/p&gt;
+&lt;p&gt;利用 Record.FilterGroup([Integer]) Method
+https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/record/record-filtergroup-method&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;trigger&lt;/span&gt; &lt;span class="nt"&gt;OnOpenPage&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt;
+&lt;span class="nt"&gt;begin&lt;/span&gt;
+    &lt;span class="nt"&gt;Rec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;FilterGroup&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;0&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+    &lt;span class="nt"&gt;Message&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;OnOpenPage group 0 filter: %1&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Rec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;GetFilters&lt;/span&gt;&lt;span class="o"&gt;());&lt;/span&gt;
+    &lt;span class="nt"&gt;Rec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;FilterGroup&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;1&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+    &lt;span class="nt"&gt;Message&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;OnOpenPage group 1 filter: %1&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Rec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;GetFilters&lt;/span&gt;&lt;span class="o"&gt;());&lt;/span&gt;
+    &lt;span class="nt"&gt;Rec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;FilterGroup&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;2&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+    &lt;span class="nt"&gt;Message&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;OnOpenPage group 2 filter: %1&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Rec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;GetFilters&lt;/span&gt;&lt;span class="o"&gt;());&lt;/span&gt;
+    &lt;span class="nt"&gt;Rec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;FilterGroup&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;3&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+    &lt;span class="nt"&gt;Message&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;OnOpenPage group 3 filter: %1&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Rec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;GetFilters&lt;/span&gt;&lt;span class="o"&gt;());&lt;/span&gt;
+    &lt;span class="nt"&gt;Rec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;FilterGroup&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;4&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+    &lt;span class="nt"&gt;Message&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;OnOpenPage group 4 filter: %1&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Rec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;GetFilters&lt;/span&gt;&lt;span class="o"&gt;());&lt;/span&gt;
+    &lt;span class="nt"&gt;Rec&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;FilterGroup&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;0&lt;/span&gt;&lt;span class="o"&gt;);//&lt;/span&gt;&lt;span class="nt"&gt;这里再把filter&lt;/span&gt; &lt;span class="nt"&gt;group设置回0&lt;/span&gt;
+&lt;span class="nt"&gt;end&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;一般如果只是希望查看 filter 的值，用完之后最好把 filter group 设置到之前使用的那个，默认是 0，否则后续的 filter 都会加到这个 group 中。&lt;/p&gt;</content><category term="dynamics-365-business-central"></category><category term="business-central"></category><category term="main-page"></category><category term="sub-page"></category><category term="part"></category></entry><entry><title>OnDrillDown 触发器的处理</title><link href="https://hacken.fun/field-drill-down.html" rel="alternate"></link><published>2023-03-03T23:00:00+01:00</published><updated>2023-03-03T23:00:00+01:00</updated><author><name>Hacken</name></author><id>tag:hacken.fun,2023-03-03:/field-drill-down.html</id><summary type="html">&lt;p&gt;如何正确的处理 OnDrillDown 触发器，让所有的东西可以被点击&lt;/p&gt;</summary><content type="html">&lt;p&gt;简单来说 OnDrillDown 事件是用来处理 page field 的点击的，
+我们可以在定义 Page 的时候通过 OnDrillDown trigger,如下&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;trigger&lt;/span&gt; &lt;span class="nv"&gt;OnDrillDown&lt;/span&gt;&lt;span class="ss"&gt;()&lt;/span&gt;
+&lt;span class="nv"&gt;begin&lt;/span&gt;
+    ...
+&lt;span class="k"&gt;end&lt;/span&gt;&lt;span class="c1"&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;值得注意的是 OnDrillDown 在用全局变量渲染的 field 上面是不能工作的。
+能工作的只有来自 SourceTable 的 filed&lt;/p&gt;
+&lt;p&gt;什么意思呢？&lt;/p&gt;
+&lt;p&gt;也就是说如果需要在某个字段上能点击，运行一些代码，或者跳转到其他文档，不能用全局变量来做字段的值的来源，虽然在有些场景数据可以存在计算出来的全局变量里面作为 field 的值，但是为了能让 DrillDown 工作，我们需要至少设计临时数据库来作为数据源。&lt;/p&gt;
+&lt;p&gt;代码例子&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;page&lt;/span&gt; &lt;span class="mi"&gt;50000&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;My Orders&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;Caption&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;My Orders&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;UsageCategory&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Lists&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;ApplicationArea&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;All&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;PageType&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ListPart&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;SourceTable&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Sales Header&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;Editable&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;DelayedInsert&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;layout&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;area&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;content&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;repeater&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Control1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;ShowCaption&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;Editable&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Order Number&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;Rec&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;No.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="p"&gt;{&lt;/span&gt;
+                    &lt;span class="n"&gt;ApplicationArea&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;All&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="n"&gt;ToolTip&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Order Number&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="n"&gt;trigger&lt;/span&gt; &lt;span class="n"&gt;OnDrillDown&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+                    &lt;span class="n"&gt;begin&lt;/span&gt;
+                        &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;这个函数会被调用&lt;/span&gt;
+                    &lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="p"&gt;}&lt;/span&gt;
+                &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;GlobalData&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;GlobalData&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="p"&gt;{&lt;/span&gt;
+                    &lt;span class="n"&gt;ApplicationArea&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;All&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="n"&gt;ToolTip&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;GlobalData&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                    &lt;span class="n"&gt;trigger&lt;/span&gt; &lt;span class="n"&gt;OnDrillDown&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+                    &lt;span class="n"&gt;begin&lt;/span&gt;
+                        &lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;这个函数不会被调用&lt;/span&gt;
+                    &lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="k"&gt;var&lt;/span&gt;
+        &lt;span class="n"&gt;GlobalData&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Code&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;通过设置 field 的 DrillDown Property 也不能解决这个问题。&lt;/p&gt;
+&lt;p&gt;参考文档：
+https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/properties/devenv-drilldown-property&lt;/p&gt;
+&lt;p&gt;https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/triggers-auto/pagefield/devenv-ondrilldown-pagefield-trigger?source=recommendations&lt;/p&gt;</content><category term="dynamics-365-business-central"></category><category term="business-central"></category><category term="ondrilldown"></category></entry><entry><title>business central 开发</title><link href="https://hacken.fun/business-central-development.html" rel="alternate"></link><published>2023-02-24T21:06:00+01:00</published><updated>2023-02-24T21:06:00+01:00</updated><author><name>Hacken</name></author><id>tag:hacken.fun,2023-02-24:/business-central-development.html</id><summary type="html">&lt;p&gt;Share some experience of working with MS business central.&lt;/p&gt;</summary><content type="html">&lt;p&gt;2022 初第一次开始接触微软的 dynamics-365-business-central 系统。
+主要的原因是公司的 ERP 系统迁移了过来。
+从此以后就开启了我的 business central 开发之路。
+这里就算开一个坑，将来用来记录一些有价值或者有趣的东西。&lt;/p&gt;</content><category term="dynamics-365-business-central"></category><category term="business-central"></category></entry></feed>

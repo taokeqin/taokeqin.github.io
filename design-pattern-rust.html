@@ -1,0 +1,105 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>设计模式 Rust 表达</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/font-awesome.css" type="text/css" />
+
+        <!-- Javascript-->
+        <script src="https://hacken.fun/theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li class="current"><a href="https://hacken.fun">博客</a> </li>
+          <li><a href="https://hacken.fun/archives.html">归档</a></li>
+          <li><a href="https://hacken.fun/categories.html">分类</a> </li>
+          <li><a href="">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href="https://hacken.fun">Tao听途说 <strong>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+<section id="content" class="body">
+  <header class="post">
+    <h1 class="entry-title">
+      设计模式 Rust 表达
+    </h1>
+  </header>
+  <footer class="post-info">
+    <abbr>
+      Tue 18 July 2023 
+         By <a class="url fn" href="https://hacken.fun/author/hacken.html">Hacken</a>
+  
+    </abbr>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <h3>学习设计模式的目标是什么？</h3>
+<p>在这里不再问为什么学习设计模式，感觉问为什么就是为了要一个答案，而且也显得太宽泛，反而以目标为导向可能是比较简单和具体的。</p>
+<ol>
+<li>如何让程序松耦合</li>
+<li>如何让程序可复用</li>
+<li>如何理解和应用常见的设计模式</li>
+</ol>
+<h3>用 Rust 的目的是什么？</h3>
+<p>没有特殊的目的，只是想用 Rust 来表达一下设计模式，Rust 和 C++在底层思维也是差不多的，而设计模式更多的是抽象层面的思维，所以用 Rust 来表达设计模式应该是比较合适的，正好可以根据李老师的课程设计进行展开。</p>
+<p>传统的设计模式离不开面向对象设计，那么在 Rust 中怎么表达面向对象的编程风格呢？
+对比 C++里面的</p>
+<ol>
+<li>封装</li>
+<li>继承</li>
+<li>多态</li>
+</ol>
+<p>Rust 里面也有对应的概念。如何在程序里面表达这些概念呢？</p>
+<ol>
+<li>fn，struct/impl 实现封装</li>
+<li>impl <trait> for <struct>， 实现接口继承</li>
+<li>trait object， 实现多态</li>
+</ol>
+<h3>设计模式需要的重要思维</h3>
+<p>在李老师的课程里面提到了两个概念，一个是分治，一个是抽象。
+分治是指把一个大问题分解成若干个小问题，然后再把小问题分解成更小的问题，直到问题可以被解决。抽象是指把一个问题抽象成一个模型，然后再把这个模型实现成一个具体的程序。</p>
+<p>这里说“分治”我个人感觉不是最佳的，如果是我会先用用“具体”这个词，这是站在数学的角度，一般我们讨论问都是从具体到一般，这里的一般就是抽象的，泛化的。</p>
+<p>我们是如何得到这个抽象的结果呢？我们是通过观察各个具体的情况，然后归纳规律，进而抽象出来的。这里的观察其实可以说和“分治”结合，把一个大问题分解成若干个小问题，然后再把小问题分解成更小的问题，直到问题可以被解决，在解决一个一个小问题的时候去总结发现其中的共性和规律性的东西。</p>
+  </div><!-- /.entry-content -->
+</section>
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href="https://hacken.fun">Hacken</a> (2012-2024)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                        <a href="#"><i class="icon-You can add links in your config file"></i>  </a>
+                        <a href="#"><i class="icon-Another social link"></i>  </a>
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+
+
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "JS2qmgGYMWE43FMT",ck: "JS2qmgGYMWE43FMT"})</script>
+</body>
+</html>

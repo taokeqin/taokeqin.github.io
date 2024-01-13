@@ -1,0 +1,102 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>我的备份方案</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/font-awesome.css" type="text/css" />
+
+        <!-- Javascript-->
+        <script src="https://hacken.fun/theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li class="current"><a href="https://hacken.fun">博客</a> </li>
+          <li><a href="https://hacken.fun/archives.html">归档</a></li>
+          <li><a href="https://hacken.fun/categories.html">分类</a> </li>
+          <li><a href="">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href="https://hacken.fun">Tao听途说 <strong>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+<section id="content" class="body">
+  <header class="post">
+    <h1 class="entry-title">
+      我的备份方案
+    </h1>
+  </header>
+  <footer class="post-info">
+    <abbr>
+      Sat 18 March 2023 
+         By <a class="url fn" href="https://hacken.fun/author/hacken.html">Hacken</a>
+  
+    </abbr>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>越来越多的信息需要备份以防在极端情况的数据丢失。比如手机掉了，电脑坏了，账号丢了。</p>
+<p>最好先思考，并遵守的好规则：</p>
+<ol>
+<li>善用各个设备自带的备份/迁移/恢复功能</li>
+<li>善用各个软件的备份/迁移/恢复功能</li>
+</ol>
+<h2>华为手机</h2>
+<p>所以我要用华为手机的备份功能，但是图片视频的备份我直接备份 DCMI 目录，这样我就可以用 rsync 增量备份。
+需要增量的原因很简单，手机上的有很多视频都是可以删除的</p>
+<div class="highlight"><pre><span></span><code>rsync -rat --ignore-existing --progress DCIM/ /target/
+</code></pre></div>
+
+<p>这里面有个问题是 DCMI 的数据只能通过 hisuite 导出，而导出后文件的创建个修改时间都不能保持以前的。
+TODO: 测试通过 hisute 的备份功能备份图片视频，看看能不能直接访问 DCMI 简洁的用 rsync 备份</p>
+<h2>微信</h2>
+<p>在微信的设置-》聊天选项里面有备份和迁移选项，但是都要通过 PC 端软件来进行，这样备份的一个好处是可以恢复。
+对于一些已经封存的聊天，这样挺好的，比如小孩自幼儿园的班级群。
+但是增量备份怎么做呢？比如小孩目前的班级群，备份后我希望清理一下手机。</p>
+<p>前一次备份的时候我有文件：1，2，3
+后一次我做了清理，删除了 1，2， 然后增加了 4，5
+我希望备份能让最终结果变成：1，2，3，4，5
+而不是用最新的 3，4，5 来覆盖。</p>
+<p>测试的结果是微信的备份是合并备份，在手机上删除的不会删除备份里面的，而且之前备份了然后从手机上删除了的也可以从备份里面恢复回来。
+唯一的缺点是备份不是可读的，文件格式是微信内部定义的。</p>
+  </div><!-- /.entry-content -->
+</section>
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href="https://hacken.fun">Hacken</a> (2012-2024)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                        <a href="#"><i class="icon-You can add links in your config file"></i>  </a>
+                        <a href="#"><i class="icon-Another social link"></i>  </a>
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+
+
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "JS2qmgGYMWE43FMT",ck: "JS2qmgGYMWE43FMT"})</script>
+</body>
+</html>

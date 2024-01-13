@@ -1,0 +1,92 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>设计模式 Rust 表达-设计原则(SOLID)</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/font-awesome.css" type="text/css" />
+
+        <!-- Javascript-->
+        <script src="https://hacken.fun/theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li class="current"><a href="https://hacken.fun">博客</a> </li>
+          <li><a href="https://hacken.fun/archives.html">归档</a></li>
+          <li><a href="https://hacken.fun/categories.html">分类</a> </li>
+          <li><a href="">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href="https://hacken.fun">Tao听途说 <strong>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+<section id="content" class="body">
+  <header class="post">
+    <h1 class="entry-title">
+      设计模式 Rust 表达-设计原则(SOLID)
+    </h1>
+  </header>
+  <footer class="post-info">
+    <abbr>
+      Wed 19 July 2023 
+         By <a class="url fn" href="https://hacken.fun/author/hacken.html">Hacken</a>
+  
+    </abbr>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <h3>SOLID 具体指的是什么？</h3>
+<ol>
+<li>单一职责，Single Responsibility Principle</li>
+<li>开放封闭, Open Closed Principle</li>
+<li>里式替换, Liskov Substitution Principle</li>
+<li>接口隔离, Interface Segregation Principle</li>
+<li>依赖倒置, Dependency Inversion Principle</li>
+</ol>
+<p>这些原则独立的被列出来，但是他们并不是正交的，反而他们之间是相互依赖的，或者说是相互支撑的，这里的支撑是指如果没有其中的一个原则，那么其他的原则也就不会存在了。而他们都有一个共同的目标</p>
+<blockquote>
+<p>编写可复用的可扩展的程序</p>
+</blockquote>
+<p>这么简短的一句话，在你没有见过大量反面程序的时候，你是无法深刻理解的。什么事反面程序呢？就是你在维护一个程序的时候，你会发现你修改了一个地方，然后另外一个地方就出现了问题，然后你又去修改另外一个地方，然后又出现了问题，这样的修改是没有尽头的，而且你修改的地方越多，你的程序就越不稳定，越不可靠，越不可维护。</p>
+<p>为什么没要接口隔离，我觉得这是对依赖倒置的一个深化或者说细化。在依赖倒置中强调依赖接口而不是具体实现来达到复用性和扩展性。这其实对接口的定义，或者说如何定义出好的接口提出了很高的要求，如果接口定义的不好，老是变化，那也没有达到目的。所以接口隔离原则就是来指导如何更好的定义接口。要求接口的定义要精简单一内聚性好，完备，不要定义过多的接口，而且接口的定义要稳定，不要老是变化。</p>
+  </div><!-- /.entry-content -->
+</section>
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href="https://hacken.fun">Hacken</a> (2012-2024)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                        <a href="#"><i class="icon-You can add links in your config file"></i>  </a>
+                        <a href="#"><i class="icon-Another social link"></i>  </a>
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+
+
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "JS2qmgGYMWE43FMT",ck: "JS2qmgGYMWE43FMT"})</script>
+</body>
+</html>

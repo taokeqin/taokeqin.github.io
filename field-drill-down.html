@@ -1,0 +1,137 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>OnDrillDown 触发器的处理</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/font-awesome.css" type="text/css" />
+
+        <!-- Javascript-->
+        <script src="https://hacken.fun/theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li class="current"><a href="https://hacken.fun">博客</a> </li>
+          <li><a href="https://hacken.fun/archives.html">归档</a></li>
+          <li><a href="https://hacken.fun/categories.html">分类</a> </li>
+          <li><a href="">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href="https://hacken.fun">Tao听途说 <strong>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+<section id="content" class="body">
+  <header class="post">
+    <h1 class="entry-title">
+      OnDrillDown 触发器的处理
+    </h1>
+  </header>
+  <footer class="post-info">
+    <abbr>
+      Fri 03 March 2023 
+         By <a class="url fn" href="https://hacken.fun/author/hacken.html">Hacken</a>
+  
+    </abbr>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>简单来说 OnDrillDown 事件是用来处理 page field 的点击的，
+我们可以在定义 Page 的时候通过 OnDrillDown trigger,如下</p>
+<div class="highlight"><pre><span></span><code><span class="nv">trigger</span> <span class="nv">OnDrillDown</span><span class="ss">()</span>
+<span class="nv">begin</span>
+    ...
+<span class="k">end</span><span class="c1">;</span>
+</code></pre></div>
+
+<p>值得注意的是 OnDrillDown 在用全局变量渲染的 field 上面是不能工作的。
+能工作的只有来自 SourceTable 的 filed</p>
+<p>什么意思呢？</p>
+<p>也就是说如果需要在某个字段上能点击，运行一些代码，或者跳转到其他文档，不能用全局变量来做字段的值的来源，虽然在有些场景数据可以存在计算出来的全局变量里面作为 field 的值，但是为了能让 DrillDown 工作，我们需要至少设计临时数据库来作为数据源。</p>
+<p>代码例子</p>
+<div class="highlight"><pre><span></span><code><span class="n">page</span> <span class="mi">50000</span> <span class="s2">&quot;My Orders&quot;</span>
+<span class="p">{</span>
+    <span class="n">Caption</span> <span class="o">=</span> <span class="s1">&#39;My Orders&#39;</span><span class="p">;</span>
+    <span class="n">UsageCategory</span> <span class="o">=</span> <span class="n">Lists</span><span class="p">;</span>
+    <span class="n">ApplicationArea</span> <span class="o">=</span> <span class="n">All</span><span class="p">;</span>
+    <span class="n">PageType</span> <span class="o">=</span> <span class="n">ListPart</span><span class="p">;</span>
+    <span class="n">SourceTable</span> <span class="o">=</span> <span class="s2">&quot;Sales Header&quot;</span><span class="p">;</span>
+    <span class="n">Editable</span> <span class="o">=</span> <span class="bp">true</span><span class="p">;</span>
+    <span class="n">DelayedInsert</span> <span class="o">=</span> <span class="bp">true</span><span class="p">;</span>
+    <span class="n">layout</span>
+    <span class="p">{</span>
+        <span class="n">area</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">repeater</span><span class="p">(</span><span class="n">Control1</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">ShowCaption</span> <span class="o">=</span> <span class="bp">false</span><span class="p">;</span>
+                <span class="n">Editable</span> <span class="o">=</span> <span class="bp">true</span><span class="p">;</span>
+                <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Order Number&quot;</span><span class="p">;</span> <span class="n">Rec</span><span class="o">.</span><span class="s2">&quot;No.&quot;</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">ApplicationArea</span> <span class="o">=</span> <span class="n">All</span><span class="p">;</span>
+                    <span class="n">ToolTip</span> <span class="o">=</span> <span class="s1">&#39;Order Number&#39;</span><span class="p">;</span>
+                    <span class="n">trigger</span> <span class="n">OnDrillDown</span><span class="p">()</span>
+                    <span class="n">begin</span>
+                        <span class="o">//</span><span class="err">这个函数会被调用</span>
+                    <span class="n">end</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="n">field</span><span class="p">(</span><span class="s2">&quot;GlobalData&quot;</span><span class="p">;</span> <span class="n">GlobalData</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">ApplicationArea</span> <span class="o">=</span> <span class="n">All</span><span class="p">;</span>
+                    <span class="n">ToolTip</span> <span class="o">=</span> <span class="s1">&#39;GlobalData&#39;</span><span class="p">;</span>
+                    <span class="n">trigger</span> <span class="n">OnDrillDown</span><span class="p">()</span>
+                    <span class="n">begin</span>
+                        <span class="o">//</span><span class="err">这个函数不会被调用</span>
+                    <span class="n">end</span><span class="p">;</span>
+                <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">var</span>
+        <span class="n">GlobalData</span><span class="p">:</span> <span class="n">Code</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>通过设置 field 的 DrillDown Property 也不能解决这个问题。</p>
+<p>参考文档：
+https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/properties/devenv-drilldown-property</p>
+<p>https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/triggers-auto/pagefield/devenv-ondrilldown-pagefield-trigger?source=recommendations</p>
+  </div><!-- /.entry-content -->
+</section>
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href="https://hacken.fun">Hacken</a> (2012-2024)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                        <a href="#"><i class="icon-You can add links in your config file"></i>  </a>
+                        <a href="#"><i class="icon-Another social link"></i>  </a>
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+
+
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "JS2qmgGYMWE43FMT",ck: "JS2qmgGYMWE43FMT"})</script>
+</body>
+</html>

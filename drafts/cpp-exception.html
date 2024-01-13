@@ -1,0 +1,136 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>C++ Exception</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/font-awesome.css" type="text/css" />
+
+        <!-- Javascript-->
+        <script src="https://hacken.fun/theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li class="current"><a href="https://hacken.fun">博客</a> </li>
+          <li><a href="https://hacken.fun/archives.html">归档</a></li>
+          <li><a href="https://hacken.fun/categories.html">分类</a> </li>
+          <li><a href="">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href="https://hacken.fun">Tao听途说 <strong>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+<section id="content" class="body">
+  <header class="post">
+    <h1 class="entry-title">
+      C++ Exception
+    </h1>
+  </header>
+  <footer class="post-info">
+    <abbr>
+      Mon 08 September 2014 
+         By <a class="url fn" href="https://hacken.fun/author/hacken.html">Hacken</a>
+  
+    </abbr>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <div class="section" id="id1">
+<h2>为什么我要写关于异常</h2>
+<p>以前我一直觉得在c++众多工具里面，可以不用异常这个工具，只需要用返回值这种模式就够了。</p>
+<p>以前也见到过很多说异常危险，很不好使用的论调：</p>
+<p><a class="reference external" href="http://www.joelonsoftware.com/items/2003/10/13.html">http://www.joelonsoftware.com/items/2003/10/13.html</a></p>
+<p><a class="reference external" href="http://250bpm.com/blog:4">http://250bpm.com/blog:4</a></p>
+<p>如果你问我会不会使用c++的异常，我的回答是我知道有这个东西，却不知道怎么用！</p>
+<p>我一直很喜欢下面这句话来描述我的处境，来自电影《The Pursuit Of Happyness》:</p>
+<pre class="literal-block">
+I'm the type of person,if you ask me a question, and I don't know the answer,I'm gonna to tell you that I don't know.
+
+But I bet you what: I know how to find the answer, and I'll find the answer.
+</pre>
+<p>最近发现些事情</p>
+<ol class="arabic simple">
+<li>不用异常其实很难</li>
+<li>如果开始使用异常，工具厢里面就里面多了一个重量级利器，但可能容易伤到你的脚</li>
+<li>有些很牛逼的异常使用方法</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h2>为什么不用异常很难？</h2>
+<p>举一些很简单的例子，日常使用的operator new, 标准库里面的std::string</p>
+<p>还是比较常用吧，其实我以前重来没有处理过这个类相关的异常！</p>
+<p>就目前我说学到的，std::string会抛出三种异常：</p>
+<p>out_of_range, length_error, bad_alloc.</p>
+<p>没有在正确的时候catch住这些异常，程序就突然结束了！</p>
+<p>标准库里面定义了一小撮异常：<a class="reference external" href="http://www.cplusplus.com/reference/exception/exception/">http://www.cplusplus.com/reference/exception/exception/</a></p>
+<p>这些个异常都会在定义好的接口，定义好的场景抛出来！</p>
+<p>所以，如果你用标准库，那么或多或少你都要处理异常！</p>
+</div>
+<div class="section" id="id3">
+<h2>为什么现在我觉得异常还是个利器?</h2>
+<p>以前有个简单的想法：异常处理不就是把处理返回值的if else换成try catch么？</p>
+<p>其实不是的，我想下面的两个资料足已解决所有的问题：</p>
+<p>C++ FAQ: <a class="reference external" href="http://www.parashift.com/c++-faq-lite/exceptions.html">http://www.parashift.com/c++-faq-lite/exceptions.html</a></p>
+<p>Jon Kalb 的三节课程： Exception-Safe Code <a class="reference external" href="http://exceptionsafecode.com/">http://exceptionsafecode.com/</a></p>
+<p>我其实体会最深的一点就是在用c语言编程的时候，函数里面大段的都是错误情况的处理，而不是真正想要的主线逻辑。</p>
+<p>虽然约定fast return可以缓解一下，但是有的人却不认同多个return分支这样的选择。</p>
+<p>而且，这种返回值的错误完全可以不检查，恰恰有时一个没有处理到，往往就成就了一个bug。</p>
+<p>还有的情况追代码发现这个错误代码会是一层一层的往上传递，</p>
+<p>但是你其实无法确定中间过程有没有人处理过返回值，如果简单的认为都是透传到上层函数，shit hppens.</p>
+<p>总的来讲，程序中错误处理是很重要也很困难的。</p>
+<p>用C++的异常工具，我目前感觉还是可以让错误处理相对简单一点。</p>
+</div>
+<div class="section" id="exception-safety">
+<h2>什么是异常安全(exception safety)</h2>
+<p>异常安全简单的来讲：</p>
+<p>异常随时可能发生，安全就是希望在异常发生的时候，对象的状态不被破坏，获取的资源还能够正确管理不会泄露。</p>
+<p><a class="reference external" href="http://herbsutter.com/gotw/_102/">http://herbsutter.com/gotw/_102/</a></p>
+<p><a class="reference external" href="http://stackoverflow.com/questions/1853243/c-do-you-really-write-exception-safe-code">http://stackoverflow.com/questions/1853243/c-do-you-really-write-exception-safe-code</a></p>
+<p><a class="reference external" href="http://www.stroustrup.com/except.pdf">http://www.stroustrup.com/except.pdf</a></p>
+</div>
+<div class="section" id="id4">
+<h2>异常处理方法</h2>
+<p><a class="reference external" href="http://open-std.org/JTC1/SC22/WG21/docs/papers/2011/n3242.pdf">http://open-std.org/JTC1/SC22/WG21/docs/papers/2011/n3242.pdf</a></p>
+</div>
+
+  </div><!-- /.entry-content -->
+</section>
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href="https://hacken.fun">Hacken</a> (2012-2024)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                        <a href="#"><i class="icon-You can add links in your config file"></i>  </a>
+                        <a href="#"><i class="icon-Another social link"></i>  </a>
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+
+
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "JS2qmgGYMWE43FMT",ck: "JS2qmgGYMWE43FMT"})</script>
+</body>
+</html>

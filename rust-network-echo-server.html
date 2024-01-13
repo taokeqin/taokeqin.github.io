@@ -1,0 +1,138 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Rust 网路编程 2 echo server</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/font-awesome.css" type="text/css" />
+
+        <!-- Javascript-->
+        <script src="https://hacken.fun/theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li class="current"><a href="https://hacken.fun">博客</a> </li>
+          <li><a href="https://hacken.fun/archives.html">归档</a></li>
+          <li><a href="https://hacken.fun/categories.html">分类</a> </li>
+          <li><a href="">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href="https://hacken.fun">Tao听途说 <strong>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+<section id="content" class="body">
+  <header class="post">
+    <h1 class="entry-title">
+      Rust 网路编程 2 echo server
+    </h1>
+  </header>
+  <footer class="post-info">
+    <abbr>
+      Wed 06 May 2015 
+         By <a class="url fn" href="https://hacken.fun/author/hacken.html">Hacken</a>
+  
+    </abbr>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>这次尝试离之前又过去了三个月了，rust已经进入了beta了：</p>
+<p>rustc 1.0.0-beta.4 (850151a75 2015-04-30) (built 2015-05-01)</p>
+<p>不光是网路部分，整个rust较之前都有了不小的变化。</p>
+<p>在第一部分里面（代码在最新的rust是肯定不能用的了），我感受了一下rust的基本网络编程。但什么事情都还没有做。
+这个第二部分就是来完成一个echo server.</p>
+<p>我还是依据一个rfc来：<a class="reference external" href="http://tools.ietf.org/html/rfc862">http://tools.ietf.org/html/rfc862</a>
+这里就只实现tcp部分。
+直接贴代码了，算是个笔记</p>
+<div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="n">net</span>::<span class="p">{</span><span class="n">TcpListener</span><span class="p">,</span><span class="w"> </span><span class="n">TcpStream</span><span class="p">};</span><span class="w"></span>
+<span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="n">thread</span><span class="p">;</span><span class="w"></span>
+<span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="n">io</span>::<span class="p">{</span><span class="n">Read</span><span class="p">,</span><span class="w"> </span><span class="n">Write</span><span class="p">};</span><span class="w"></span>
+
+<span class="c1">// 单个连接的处理函数</span>
+<span class="k">fn</span> <span class="nf">handle_client</span><span class="p">(</span><span class="k">mut</span><span class="w"> </span><span class="n">stream</span>: <span class="nc">TcpStream</span><span class="p">){</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">peer_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stream</span><span class="p">.</span><span class="n">peer_addr</span><span class="p">().</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="fm">println!</span><span class="p">(</span><span class="s">&quot;connected from: {} &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">peer_addr</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="mi">100</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">loop</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stream</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="n">data</span><span class="p">).</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="fm">println!</span><span class="p">(</span><span class="s">&quot;Peer shutdown!&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="fm">print!</span><span class="p">(</span><span class="s">&quot;{} say: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">peer_addr</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">0</span><span class="o">..</span><span class="n">len</span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="fm">print!</span><span class="p">(</span><span class="s">&quot;{}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">char</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// echo to client</span>
+<span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stream</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="o">..</span><span class="n">len</span><span class="p">]).</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//RFC 说echo server要运行在端口7，这里就运行在7777吧，万恶的unwrap!</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="n">listener</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TcpListener</span>::<span class="n">bind</span><span class="p">(</span><span class="s">&quot;127.0.0.1:7777&quot;</span><span class="p">).</span><span class="n">unwrap</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">listener</span><span class="p">.</span><span class="n">incoming</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">match</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nb">Ok</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="c1">//这里对每一个accept的链接，启动一个线程来处理</span>
+<span class="w">                </span><span class="c1">//线程函数是个colsure,不带参数</span>
+<span class="w">                </span><span class="c1">//捕获上下文里面的stream变量，强制move</span>
+<span class="w">                </span><span class="n">thread</span>::<span class="n">spawn</span><span class="p">(</span><span class="k">move</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                    </span><span class="n">handle_client</span><span class="p">(</span><span class="n">stream</span><span class="p">);</span><span class="w"></span>
+<span class="w">                </span><span class="p">});</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">            </span><span class="nb">Err</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="fm">println!</span><span class="p">(</span><span class="s">&quot;Fucked by the network problem: {} &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+<p>很多错误没有处理，都直接unwrap了。</p>
+<p>下一个试试写一个聊天室程序吧。用一个非常简单需求：</p>
+<p>1，服务器启动</p>
+<p>2，客户端连接，发送消息到服务器</p>
+<p>3，服务器广播消息到所有连接的客户端</p>
+
+  </div><!-- /.entry-content -->
+</section>
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href="https://hacken.fun">Hacken</a> (2012-2024)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                        <a href="#"><i class="icon-You can add links in your config file"></i>  </a>
+                        <a href="#"><i class="icon-Another social link"></i>  </a>
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+
+
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "JS2qmgGYMWE43FMT",ck: "JS2qmgGYMWE43FMT"})</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>主页面和子页面的通信</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/font-awesome.css" type="text/css" />
+
+        <!-- Javascript-->
+        <script src="https://hacken.fun/theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li class="current"><a href="https://hacken.fun">博客</a> </li>
+          <li><a href="https://hacken.fun/archives.html">归档</a></li>
+          <li><a href="https://hacken.fun/categories.html">分类</a> </li>
+          <li><a href="">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href="https://hacken.fun">Tao听途说 <strong>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+<section id="content" class="body">
+  <header class="post">
+    <h1 class="entry-title">
+      主页面和子页面的通信
+    </h1>
+  </header>
+  <footer class="post-info">
+    <abbr>
+      Tue 07 March 2023 
+         By <a class="url fn" href="https://hacken.fun/author/hacken.html">Hacken</a>
+  
+    </abbr>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>这里讨论的 main 页面和子页面不是关于继承关系的两个页面，即不是用 extends 扩展的页面之间的通信，而是类似在 Sales Order 页面 Header 和 Sales Order Line 之间的通信。</p>
+<p>简单来说要说明的就是</p>
+<ol>
+<li>Header 发生了变化，怎么通知 Sales Order Line 页面。</li>
+<li>Sales Order Line 页面发生了变化，怎么通知 Header 页面。</li>
+</ol>
+<p>用下面这个例子来展示一种可能的通信方式，具体内容参见注释</p>
+<p>注意在 Sales Order 页面的定义中有个 part，名字是：SalesLines，下面代码节选自: page 42 "Sales Order"</p>
+<div class="highlight"><pre><span></span><code>part(SalesLines; &quot;Sales Order Subform&quot;)
+{
+    ApplicationArea = Basic, Suite;
+    Editable = IsSalesLinesEditable;
+    Enabled = IsSalesLinesEditable;
+    SubPageLink = &quot;Document No.&quot; = FIELD(&quot;No.&quot;);
+    UpdatePropagation = Both; //这个属性很关键
+}
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">pageextension</span> <span class="mi">50000</span> <span class="s2">&quot;My Sales Order&quot;</span> <span class="k">extends</span> <span class="s2">&quot;Sales Order&quot;</span>
+<span class="p">{</span>
+    <span class="n">trigger</span> <span class="n">OnOpenPage</span><span class="p">()</span>
+    <span class="n">begin</span>
+        <span class="o">//</span><span class="err">这里可以通过访问</span><span class="n">CurrPage</span><span class="o">.</span><span class="n">xxx</span>
+        <span class="o">//</span><span class="n">xxx表示field</span>
+        <span class="o">//</span><span class="err">这里通过</span><span class="n">SalesLines获取到这个part</span>
+        <span class="o">//</span><span class="err">通过</span><span class="n">CurrPage</span><span class="o">.</span><span class="n">SalesLines</span><span class="o">.</span><span class="n">Page获取这个子页面对象</span>
+        <span class="o">//</span><span class="n">CurrPage</span><span class="o">.</span><span class="n">SalesLines</span><span class="o">.</span><span class="n">Page</span><span class="o">.</span><span class="n">SetParentRec调用SalesLines页面的一个公共函数</span><span class="err">。</span>
+        <span class="o">//</span><span class="err">这样通过调用子页面的方法来进行向下数据传递</span>
+        <span class="n">CurrPage</span><span class="o">.</span><span class="n">SalesLines</span><span class="o">.</span><span class="n">Page</span><span class="o">.</span><span class="n">SetParentRec</span><span class="p">(</span><span class="n">Rec</span><span class="p">);</span>
+    <span class="n">end</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">pageextension</span> <span class="mi">50001</span> <span class="s2">&quot;My Sales Order Subform&quot;</span> <span class="k">extends</span> <span class="s2">&quot;Sales Order Subform&quot;</span>
+<span class="p">{</span>
+    <span class="n">layout</span>
+    <span class="p">{</span>
+        <span class="n">modify</span><span class="p">(</span><span class="s2">&quot;No.&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">trigger</span> <span class="n">OnAfterValidate</span><span class="p">()</span>
+            <span class="n">begin</span>
+                <span class="o">//</span> <span class="err">下面这一行很重要，</span><span class="n">Get一下以获取最新的变更</span><span class="err">，否则保存的时候可能因为</span><span class="n">etag已经不是最新的了而保存失败</span>
+                <span class="n">ParentSalesHeaderRecord</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">ParentSalesHeaderRecord</span><span class="o">.</span><span class="s2">&quot;Document Type&quot;</span><span class="p">,</span> <span class="n">ParentSalesHeaderRecord</span><span class="o">.</span><span class="s2">&quot;No.&quot;</span><span class="p">);</span>
+                <span class="n">ParentSalesHeaderRecord</span><span class="o">.</span><span class="s2">&quot;Location Code&quot;</span> <span class="p">:</span><span class="o">=</span> <span class="s2">&quot;MyLocation&quot;</span><span class="o">//</span><span class="err">在这里改变上级页面的数据</span>
+                <span class="n">ParentSalesHeaderRecord</span><span class="o">.</span><span class="n">Modify</span><span class="p">();</span><span class="o">//</span><span class="err">保存变更到数据库</span>
+                <span class="n">CurrPage</span><span class="o">.</span><span class="n">Update</span><span class="p">();</span><span class="o">//</span><span class="err">触发更新</span>
+                <span class="o">//</span><span class="err">奇怪的是如果注释掉上面这一行功能也正常，这和</span><span class="n">UpdatePropagation属性描述的有一些出入</span><span class="err">。</span>
+            <span class="n">end</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="o">//</span><span class="err">这个函数用</span><span class="n">procedure定义</span><span class="err">，表示公共方法</span>
+    <span class="o">//</span><span class="err">参数是一个</span><span class="n">Sales</span> <span class="n">Header的引用</span>
+    <span class="n">procedure</span> <span class="n">SetParentRec</span><span class="p">(</span><span class="k">var</span> <span class="n">PSalesHeaderRecord</span><span class="p">:</span> <span class="n">Record</span> <span class="s2">&quot;Sales Header&quot;</span><span class="p">)</span>
+    <span class="n">begin</span>
+        <span class="n">ParentSalesHeaderRecord</span> <span class="p">:</span><span class="o">=</span> <span class="n">PSalesHeaderRecord</span><span class="p">;</span><span class="o">//</span><span class="err">这里会产生一个</span><span class="n">copy</span><span class="err">，所以在子页面中就得到了一个上级页面的数据</span>
+        <span class="n">ParentSalesHeaderRecord</span><span class="o">.</span><span class="s2">&quot;Location Code&quot;</span> <span class="p">:</span><span class="o">=</span> <span class="s2">&quot;MyLocation&quot;</span><span class="p">;</span> <span class="o">//</span> <span class="err">注意，这一行不会改变主页面的</span><span class="n">Rec</span>
+        <span class="n">PSalesHeaderRecord</span><span class="o">.</span><span class="s2">&quot;Location Code&quot;</span> <span class="p">:</span><span class="o">=</span> <span class="s2">&quot;MyLocation&quot;</span><span class="p">;</span> <span class="o">//</span> <span class="err">注意，这一行同样不会改变主页面的</span><span class="n">Rec</span>
+        <span class="o">//</span><span class="err">虽然</span><span class="n">PSalesHeaderRecord是引用出入</span><span class="err">，但却不是引用的行为，很奇怪，目前还没弄清楚为什么是这样！</span>
+    <span class="n">end</span><span class="p">;</span>
+
+    <span class="k">var</span>
+        <span class="n">ParentSalesHeaderRecord</span><span class="p">:</span> <span class="n">Record</span> <span class="s2">&quot;Sales Header&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>所以简单来讲：</p>
+<ol>
+<li>向下通过 page 的方法调用传递数据，当然也可以传递主页面的 Rec 数据。</li>
+<li>保存主页面的 Rec 到 part，通过改变 Rec 的值，保存数据库，更新页面</li>
+</ol>
+<p>在子页面如何获取主页面调用是传的参数呢？</p>
+<p>可以通过如下函数测试看看在子页面中都获取到了哪些过滤器。</p>
+<p>利用 Record.FilterGroup([Integer]) Method
+https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/methods-auto/record/record-filtergroup-method</p>
+<div class="highlight"><pre><span></span><code><span class="nt">trigger</span> <span class="nt">OnOpenPage</span><span class="o">()</span>
+<span class="nt">begin</span>
+    <span class="nt">Rec</span><span class="p">.</span><span class="nc">FilterGroup</span><span class="o">(</span><span class="nt">0</span><span class="o">);</span>
+    <span class="nt">Message</span><span class="o">(</span><span class="s1">&#39;OnOpenPage group 0 filter: %1&#39;</span><span class="o">,</span> <span class="nt">Rec</span><span class="p">.</span><span class="nc">GetFilters</span><span class="o">());</span>
+    <span class="nt">Rec</span><span class="p">.</span><span class="nc">FilterGroup</span><span class="o">(</span><span class="nt">1</span><span class="o">);</span>
+    <span class="nt">Message</span><span class="o">(</span><span class="s1">&#39;OnOpenPage group 1 filter: %1&#39;</span><span class="o">,</span> <span class="nt">Rec</span><span class="p">.</span><span class="nc">GetFilters</span><span class="o">());</span>
+    <span class="nt">Rec</span><span class="p">.</span><span class="nc">FilterGroup</span><span class="o">(</span><span class="nt">2</span><span class="o">);</span>
+    <span class="nt">Message</span><span class="o">(</span><span class="s1">&#39;OnOpenPage group 2 filter: %1&#39;</span><span class="o">,</span> <span class="nt">Rec</span><span class="p">.</span><span class="nc">GetFilters</span><span class="o">());</span>
+    <span class="nt">Rec</span><span class="p">.</span><span class="nc">FilterGroup</span><span class="o">(</span><span class="nt">3</span><span class="o">);</span>
+    <span class="nt">Message</span><span class="o">(</span><span class="s1">&#39;OnOpenPage group 3 filter: %1&#39;</span><span class="o">,</span> <span class="nt">Rec</span><span class="p">.</span><span class="nc">GetFilters</span><span class="o">());</span>
+    <span class="nt">Rec</span><span class="p">.</span><span class="nc">FilterGroup</span><span class="o">(</span><span class="nt">4</span><span class="o">);</span>
+    <span class="nt">Message</span><span class="o">(</span><span class="s1">&#39;OnOpenPage group 4 filter: %1&#39;</span><span class="o">,</span> <span class="nt">Rec</span><span class="p">.</span><span class="nc">GetFilters</span><span class="o">());</span>
+    <span class="nt">Rec</span><span class="p">.</span><span class="nc">FilterGroup</span><span class="o">(</span><span class="nt">0</span><span class="o">);//</span><span class="nt">这里再把filter</span> <span class="nt">group设置回0</span>
+<span class="nt">end</span><span class="o">;</span>
+</code></pre></div>
+
+<p>一般如果只是希望查看 filter 的值，用完之后最好把 filter group 设置到之前使用的那个，默认是 0，否则后续的 filter 都会加到这个 group 中。</p>
+  </div><!-- /.entry-content -->
+</section>
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href="https://hacken.fun">Hacken</a> (2012-2024)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                        <a href="#"><i class="icon-You can add links in your config file"></i>  </a>
+                        <a href="#"><i class="icon-Another social link"></i>  </a>
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+
+
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "JS2qmgGYMWE43FMT",ck: "JS2qmgGYMWE43FMT"})</script>
+</body>
+</html>

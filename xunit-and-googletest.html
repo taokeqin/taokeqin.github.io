@@ -1,0 +1,158 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>googletest和xUnit架构</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Marcellus' rel='stylesheet' type='text/css'>
+        
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/pygments.css" type="text/css" />
+        <link rel="stylesheet" href="https://hacken.fun/theme/css/font-awesome.css" type="text/css" />
+
+        <!-- Javascript-->
+        <script src="https://hacken.fun/theme/js/invisible-menu-scroll.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+        <script type="text/javascript"> 
+          $(function() {
+            invisibleMenu();
+          });
+        </script> 
+</head>
+
+<body id="index" class="home">
+     <div class="navigation">
+        <ol class="nav">
+          <li class="current"><a href="https://hacken.fun">博客</a> </li>
+          <li><a href="https://hacken.fun/archives.html">归档</a></li>
+          <li><a href="https://hacken.fun/categories.html">分类</a> </li>
+          <li><a href="">RSS</a> </li>
+        </ol>
+      </div>
+        <header id="banner" class="body">
+                <div class="banner"><a href="https://hacken.fun">Tao听途说 <strong>把不可能变成可能，把困难变成简单，把简单变成傻瓜，把idea变成现实，一个程序员的旅程</strong></a></div>
+        </header><!-- /#banner -->
+        <nav id="menu"><ul>
+        </ul></nav><!-- /#menu -->
+        <div class="box">
+<section id="content" class="body">
+  <header class="post">
+    <h1 class="entry-title">
+      googletest和xUnit架构
+    </h1>
+  </header>
+  <footer class="post-info">
+    <abbr>
+      Fri 06 April 2012 
+         By <a class="url fn" href="https://hacken.fun/author/hacken.html">Hacken</a>
+  
+    </abbr>
+  </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>对于C++的测试，现在我知道两个cppunit和googletest。虽然他们都是写写xUnit构的，但是我偏向于喜欢googletest，可能是自己用得比较熟悉的原因。</p>
+<div class="section" id="xunix">
+<h2>什么是xUnix架构</h2>
+<p>我的一些简单理解，最先那个谁写了一个测试框架，然后大家都用，并且大家后来都觉得这种方式还不错，就这样成了惯例，然后在其他语言也有人根据这种模式写出类似的测试框架，不断的发展就成了xUnit框架，狭义的来讲x泛指各种语言。</p>
+<p>xUnit有一些简单的概念：</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>Testcase 测试用例</dt>
+<dd>单元测试的基本单元，用来描述一个测试点
+完整的测试由很多的测试用例构成</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Testfixture 测试固件（测试上下文）</dt>
+<dd>我觉得翻译为 <strong>测试上下文</strong> 比较好理解,根据这个翻译就可以看出，测试上下         文就是为了给测试用例提供一个上下文。</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Testsuit 测试套件</dt>
+<dd>把很多测试用例放到一起，共享相同的测试上下文，这就是一测试套件</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Test execution 测试执行</dt>
+<dd>规定了测试用例的执行策略，比如为每个测试用例先建立测试上下文，然后运行测    试用例，对上下文进行清理</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Test Assertions 测试断言</dt>
+<dd>断言这个比较容易理解，即使不再测试架构里面也有用。</dd>
+</dl>
+</li>
+</ul>
+<p>满足上面的所以概念，他就xUnit了，so easy！</p>
+</div>
+<div class="section" id="id1">
+<h2>googletest对应于xUnit</h2>
+<ul class="simple">
+<li>测试用例 与 断言</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">TEST</span><span class="p">(</span><span class="n">test_case_name</span><span class="p">,</span><span class="w"> </span><span class="n">testname</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">ASSERT_EQ</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+<p>这个代码是一个 <strong>测试用例</strong> 的例子，在googletest中，在同一个测试用例下可以有
+很多不同名字的测试,testname需要不一样。 <strong>断言</strong> 也出现在了上面的代码中，googletest中还有各种断言。</p>
+<ul class="simple">
+<li>测试固件 与 测试套件</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyTest</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="o">::</span><span class="n">testing</span><span class="o">::</span><span class="n">Test</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">protected</span><span class="o">:</span><span class="w"></span>
+<span class="w">                </span><span class="n">MyTest</span><span class="p">(){}</span><span class="w"></span>
+<span class="w">                </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">MyTest</span><span class="p">(){}</span><span class="w"></span>
+
+<span class="w">                </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">SetUp</span><span class="p">(){}</span><span class="w"></span>
+<span class="w">                </span><span class="k">virtual</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">TearDown</span><span class="p">(){}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="w"> </span><span class="n">MyTest</span><span class="p">,</span><span class="w"> </span><span class="n">TEST_NAME_1</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">ASSERT_EQ</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="n">TEST_F</span><span class="p">(</span><span class="w"> </span><span class="n">MyTest</span><span class="p">,</span><span class="w"> </span><span class="n">TEST_NAME_2</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">ASSERT_EQ</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+<p>在googletest里面，需要固件就让你的testcase从::testing::Test派生出来。那测试
+固件在那里呢？就在于通过这种方式，可以为你的测试用例提供一个上下文，你可以在
+构造函数，SetUp函数中准备你的上下文，然后在析构函数和TearDown函数中进行必要
+的清理。那测试套件又在那里呢？我的理解是逻辑上的来讲，整个就是一测试套件。</p>
+<ul class="simple">
+<li>测试执行</li>
+</ul>
+<p>那测试套件的执行来说，就是创建测试上下文，执行测试用例下面的一个测试，清理上下文。然后从新再来</p>
+</div>
+
+  </div><!-- /.entry-content -->
+</section>
+            <hr/>
+            <footer id="contentinfo" class="footer">
+                <div>
+                    <a href="https://hacken.fun">Hacken</a> (2012-2024)
+                </div>
+                <div>
+                    powered by <a href="http://getpelican.com/">Pelican</a>
+                </div>
+                <div class="social">
+                        <a href="#"><i class="icon-You can add links in your config file"></i>  </a>
+                        <a href="#"><i class="icon-Another social link"></i>  </a>
+                </div>
+            </footer><!-- /#contentinfo -->
+        </div>
+        <!--Add statistycs-->
+
+
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "JS2qmgGYMWE43FMT",ck: "JS2qmgGYMWE43FMT"})</script>
+</body>
+</html>
